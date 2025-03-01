@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace PethouseAPI.Data.Models;
 
@@ -19,6 +20,7 @@ public class Pet
     public int OwnerId { get; set; }
 
     [InverseProperty("Pets")]
+    [JsonIgnore]
     public Owner Owner { get; set; }
 
     public List<PetAppointment> PetsAppointments { get; set; }
