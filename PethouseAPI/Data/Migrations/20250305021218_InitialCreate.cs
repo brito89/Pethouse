@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace PethouseAPI.Data.Migrations
 {
     /// <inheritdoc />
@@ -36,7 +38,7 @@ namespace PethouseAPI.Data.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Label = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Label = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     PricePeakSeason = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     PriceLowSeason = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
                 },
@@ -54,7 +56,7 @@ namespace PethouseAPI.Data.Migrations
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Address = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     EmergencyContactName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     EmergencyContactPhone = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     EmergencyContactRelationship = table.Column<string>(type: "nvarchar(max)", nullable: false)
@@ -87,9 +89,9 @@ namespace PethouseAPI.Data.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DateOfBirth = table.Column<DateOnly>(type: "date", nullable: false),
-                    BreedName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    BreedName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     IsMedicated = table.Column<bool>(type: "bit", nullable: false),
-                    Notes = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Notes = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     BreedSizeId = table.Column<int>(type: "int", nullable: false),
                     OwnerId = table.Column<int>(type: "int", nullable: false)
                 },
@@ -139,6 +141,36 @@ namespace PethouseAPI.Data.Migrations
                         principalTable: "Pets",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.InsertData(
+                table: "BreedSizes",
+                columns: new[] { "Id", "Label", "Name", "PriceLowSeason", "PricePeakSeason" },
+                values: new object[,]
+                {
+                    { 1, "0-10kg", "Small", 120.00m, 100.00m },
+                    { 2, "11-25kg", "Medium", 170.00m, 150.00m },
+                    { 3, "26-40kg", "Large", 220.00m, 200.00m },
+                    { 4, "41-60kg", "Extra Large", 270.00m, 250.00m }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Owners",
+                columns: new[] { "Id", "Address", "Email", "EmergencyContactName", "EmergencyContactPhone", "EmergencyContactRelationship", "Name", "PhoneNumber" },
+                values: new object[,]
+                {
+                    { 1, "calle falsa 123", "coco@gmail.com", "Dai", "9992923923", "Sister", "Juan Brito", "9992923563" },
+                    { 2, "calle falsa 123", "dai@gmail.com", "coco", "111111111", "brother", "Dai", "99999999" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Pets",
+                columns: new[] { "Id", "BreedName", "BreedSizeId", "DateOfBirth", "IsMedicated", "Name", "Notes", "OwnerId" },
+                values: new object[,]
+                {
+                    { 1, "Chihuahua", 1, new DateOnly(2022, 10, 10), false, "Pocha", "None", 1 },
+                    { 2, "Border", 2, new DateOnly(2020, 10, 10), false, "Luna", "None", 1 },
+                    { 3, "Labrador", 3, new DateOnly(2018, 10, 10), false, "Coco", "None", 2 }
                 });
 
             migrationBuilder.CreateIndex(

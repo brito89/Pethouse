@@ -17,5 +17,105 @@ namespace PethouseAPI.Data
         public DbSet<Appointment> Appointments { get; set; }
         public DbSet<PetAppointment> PetAppointments { get; set; }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Owner>().HasData(
+                new Owner
+                {
+                    Id = 1,
+                    Name = "Juan Brito",
+                    Email = "coco@gmail.com",
+                    PhoneNumber = "9992923563",
+                    Address = "calle falsa 123",
+                    EmergencyContactName = "Dai",
+                    EmergencyContactPhone = "9992923923",
+                    EmergencyContactRelationship = "Sister"
+
+                },
+                new Owner
+                {
+                    Id = 2,
+                    Name = "Dai",
+                    Email = "dai@gmail.com",
+                    PhoneNumber = "99999999",
+                    Address = "calle falsa 123",
+                    EmergencyContactName = "coco",
+                    EmergencyContactPhone = "111111111",
+                    EmergencyContactRelationship = "brother"
+
+                }
+                );            
+            modelBuilder.Entity<BreedSize>().HasData(
+                new BreedSize 
+                {
+                    Id = 1,
+                    Name = "Small",
+                    Label = "0-10kg",
+                    PricePeakSeason = 100.00m,
+                    PriceLowSeason = 120.00m
+
+                },
+                new BreedSize
+                {
+                    Id = 2,
+                    Name = "Medium",
+                    Label = "11-25kg",
+                    PricePeakSeason = 150.00m,
+                    PriceLowSeason = 170.00m
+                },
+                new BreedSize
+                {
+                    Id = 3,
+                    Name = "Large",
+                    Label = "26-40kg",
+                    PricePeakSeason = 200.00m,
+                    PriceLowSeason = 220.00m
+                },
+                new BreedSize
+                {
+                    Id = 4,
+                    Name = "Extra Large",
+                    Label = "41-60kg",
+                    PricePeakSeason = 250.00m,
+                    PriceLowSeason = 270.00m
+                }
+                );
+            modelBuilder.Entity<Pet>().HasData(
+                new Pet
+                {
+                    Id = 1,
+                    Name = "Pocha",
+                    DateOfBirth = new DateOnly(2022, 10, 10),
+                    BreedName = "Chihuahua",
+                    IsMedicated = false,
+                    Notes = "None",
+                    BreedSizeId = 1,
+                    OwnerId = 1
+                },
+                new Pet
+                {
+                    Id = 2,
+                    Name = "Luna",
+                    DateOfBirth = new DateOnly(2020, 10, 10),
+                    BreedName = "Border",
+                    IsMedicated = false,
+                    Notes = "None",
+                    BreedSizeId = 2,
+                    OwnerId = 1
+                },
+                new Pet
+                {
+                    Id = 3,
+                    Name = "Coco",
+                    DateOfBirth = new DateOnly(2018, 10, 10),
+                    BreedName = "Labrador",
+                    IsMedicated = false,
+                    Notes = "None",
+                    BreedSizeId = 3,
+                    OwnerId = 2
+                }
+                );
+        }
+
     }
 }

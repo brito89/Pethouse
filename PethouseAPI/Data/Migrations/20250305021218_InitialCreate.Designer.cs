@@ -12,7 +12,7 @@ using PethouseAPI.Data;
 namespace PethouseAPI.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250301191908_Initial-Create")]
+    [Migration("20250305021218_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -65,7 +65,6 @@ namespace PethouseAPI.Data.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Label")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
@@ -81,6 +80,40 @@ namespace PethouseAPI.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("BreedSizes");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Label = "0-10kg",
+                            Name = "Small",
+                            PriceLowSeason = 120.00m,
+                            PricePeakSeason = 100.00m
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Label = "11-25kg",
+                            Name = "Medium",
+                            PriceLowSeason = 170.00m,
+                            PricePeakSeason = 150.00m
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Label = "26-40kg",
+                            Name = "Large",
+                            PriceLowSeason = 220.00m,
+                            PricePeakSeason = 200.00m
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Label = "41-60kg",
+                            Name = "Extra Large",
+                            PriceLowSeason = 270.00m,
+                            PricePeakSeason = 250.00m
+                        });
                 });
 
             modelBuilder.Entity("PethouseAPI.Data.Models.Owner", b =>
@@ -92,7 +125,6 @@ namespace PethouseAPI.Data.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Address")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
@@ -122,6 +154,30 @@ namespace PethouseAPI.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Owners");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Address = "calle falsa 123",
+                            Email = "coco@gmail.com",
+                            EmergencyContactName = "Dai",
+                            EmergencyContactPhone = "9992923923",
+                            EmergencyContactRelationship = "Sister",
+                            Name = "Juan Brito",
+                            PhoneNumber = "9992923563"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Address = "calle falsa 123",
+                            Email = "dai@gmail.com",
+                            EmergencyContactName = "coco",
+                            EmergencyContactPhone = "111111111",
+                            EmergencyContactRelationship = "brother",
+                            Name = "Dai",
+                            PhoneNumber = "99999999"
+                        });
                 });
 
             modelBuilder.Entity("PethouseAPI.Data.Models.PeakSeason", b =>
@@ -156,7 +212,6 @@ namespace PethouseAPI.Data.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("BreedName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("BreedSizeId")
@@ -173,7 +228,6 @@ namespace PethouseAPI.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Notes")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("OwnerId")
@@ -186,6 +240,41 @@ namespace PethouseAPI.Data.Migrations
                     b.HasIndex("OwnerId");
 
                     b.ToTable("Pets");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            BreedName = "Chihuahua",
+                            BreedSizeId = 1,
+                            DateOfBirth = new DateOnly(2022, 10, 10),
+                            IsMedicated = false,
+                            Name = "Pocha",
+                            Notes = "None",
+                            OwnerId = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            BreedName = "Border",
+                            BreedSizeId = 2,
+                            DateOfBirth = new DateOnly(2020, 10, 10),
+                            IsMedicated = false,
+                            Name = "Luna",
+                            Notes = "None",
+                            OwnerId = 1
+                        },
+                        new
+                        {
+                            Id = 3,
+                            BreedName = "Labrador",
+                            BreedSizeId = 3,
+                            DateOfBirth = new DateOnly(2018, 10, 10),
+                            IsMedicated = false,
+                            Name = "Coco",
+                            Notes = "None",
+                            OwnerId = 2
+                        });
                 });
 
             modelBuilder.Entity("PethouseAPI.Data.Models.PetAppointment", b =>

@@ -11,6 +11,6 @@ public class Appointment
     public bool MedicalChecked { get; set; }
     public bool CarnetCheked { get; set; }
     public AppointmentType AppointmentType { get; set; }
-    public List<PetAppointment> PetsAppointments { get; set; }
+    public ICollection<PetAppointment>? PetsAppointments { get; set; }
 
 }
