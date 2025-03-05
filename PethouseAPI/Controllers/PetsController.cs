@@ -25,14 +25,20 @@ namespace PethouseAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Pet>>> GetPets()
         {
-            return await _context.Pets.Include(b => b.BreedSize).ToListAsync();
+            return await _context.Pets.Include(b => b.BreedSize)
+                                      .Include(pa => pa.PetsAppointments)
+                                      .Include(o => o.Owner)
+                                      .ToListAsync();
         }
 
         // GET: api/Pets/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Pet>> GetPet(int id)
         {
-            var pet = await _context.Pets.FindAsync(id);
+            var pet = await _context.Pets.Include(b => b.BreedSize)
+                                         .Include(pa => pa.PetsAppointments)
+                                         .Include(o => o.Owner)
+                                         .FirstOrDefaultAsync(p => p.Id == id);
 
             if (pet == null)
             {

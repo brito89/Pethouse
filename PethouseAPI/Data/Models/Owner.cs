@@ -20,7 +20,7 @@ public class Owner
     public required string EmergencyContactPhone { get; set; }
 
     public required string EmergencyContactRelationship { get; set; }
-
+    [JsonIgnore]
     public ICollection<Pet>? Pets { get; set; }
 }
 
