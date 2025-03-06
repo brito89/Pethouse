@@ -14,21 +14,16 @@ namespace PethouseAPI.Data.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Appointments",
+                name: "AppointmentType",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    StartDate = table.Column<DateOnly>(type: "date", nullable: false),
-                    EndDate = table.Column<DateOnly>(type: "date", nullable: false),
-                    isTOSAppointmentDocumentSigned = table.Column<bool>(type: "bit", nullable: false),
-                    MedicalChecked = table.Column<bool>(type: "bit", nullable: false),
-                    CarnetCheked = table.Column<bool>(type: "bit", nullable: false),
-                    AppointmentType = table.Column<int>(type: "int", nullable: false)
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Appointments", x => x.Id);
+                    table.PrimaryKey("PK_AppointmentType", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -82,6 +77,30 @@ namespace PethouseAPI.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Appointments",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    StartDate = table.Column<DateOnly>(type: "date", nullable: false),
+                    EndDate = table.Column<DateOnly>(type: "date", nullable: false),
+                    isTOSAppointmentDocumentSigned = table.Column<bool>(type: "bit", nullable: false),
+                    MedicalChecked = table.Column<bool>(type: "bit", nullable: false),
+                    CarnetCheked = table.Column<bool>(type: "bit", nullable: false),
+                    AppointmentTypeId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Appointments", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Appointments_AppointmentType_AppointmentTypeId",
+                        column: x => x.AppointmentTypeId,
+                        principalTable: "AppointmentType",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Pets",
                 columns: table => new
                 {
@@ -124,7 +143,8 @@ namespace PethouseAPI.Data.Migrations
                     Tuesday = table.Column<bool>(type: "bit", nullable: false),
                     Wednesday = table.Column<bool>(type: "bit", nullable: false),
                     Thursday = table.Column<bool>(type: "bit", nullable: false),
-                    Friday = table.Column<bool>(type: "bit", nullable: false)
+                    Friday = table.Column<bool>(type: "bit", nullable: false),
+                    isActive = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -141,6 +161,15 @@ namespace PethouseAPI.Data.Migrations
                         principalTable: "Pets",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.InsertData(
+                table: "AppointmentType",
+                columns: new[] { "Id", "Name" },
+                values: new object[,]
+                {
+                    { 1, "Hospedaje" },
+                    { 2, "Guarderia" }
                 });
 
             migrationBuilder.InsertData(
@@ -172,6 +201,12 @@ namespace PethouseAPI.Data.Migrations
                     { 2, "Border", 2, new DateOnly(2020, 10, 10), false, "Luna", "None", 1 },
                     { 3, "Labrador", 3, new DateOnly(2018, 10, 10), false, "Coco", "None", 2 }
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Appointments_AppointmentTypeId",
+                table: "Appointments",
+                column: "AppointmentTypeId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_PetAppointments_AppointmentId",
@@ -208,6 +243,9 @@ namespace PethouseAPI.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "Pets");
+
+            migrationBuilder.DropTable(
+                name: "AppointmentType");
 
             migrationBuilder.DropTable(
                 name: "BreedSizes");

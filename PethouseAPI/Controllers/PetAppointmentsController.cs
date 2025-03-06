@@ -25,7 +25,8 @@ namespace PethouseAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<PetAppointment>>> GetPetAppointments()
         {
-            return await _context.PetAppointments.Include(a => a.Appointment).ToListAsync();
+            return await _context.PetAppointments.Include(a => a.Appointment)
+                                                 .ThenInclude(at => at.AppointmentType).ToListAsync();
         }
 
         // GET: api/PetAppointments/5

@@ -25,14 +25,14 @@ namespace PethouseAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Appointment>>> GetAppointments()
         {
-            return await _context.Appointments.ToListAsync();
+            return await _context.Appointments.Include(a => a.AppointmentType).ToListAsync();
         }
 
         // GET: api/Appointments/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Appointment>> GetAppointment(int id)
         {
-            var appointment = await _context.Appointments.FindAsync(id);
+            var appointment = await _context.Appointments.Include(a => a.AppointmentType).FirstOrDefaultAsync(a => a.Id == id);
 
             if (appointment == null)
             {

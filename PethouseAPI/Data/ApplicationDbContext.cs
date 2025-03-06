@@ -115,6 +115,18 @@ namespace PethouseAPI.Data
                     OwnerId = 2
                 }
                 );
+            modelBuilder.Entity<AppointmentType>().HasData(
+                new AppointmentType
+                {
+                    Id = 1,
+                    Name = "Hospedaje"
+                },
+                new AppointmentType
+                {
+                    Id = 2,
+                    Name = "Guarderia"
+                }
+                );
         }
 
     }

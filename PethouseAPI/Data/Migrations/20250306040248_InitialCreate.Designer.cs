@@ -12,7 +12,7 @@ using PethouseAPI.Data;
 namespace PethouseAPI.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250305021218_InitialCreate")]
+    [Migration("20250306040248_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -33,7 +33,7 @@ namespace PethouseAPI.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("AppointmentType")
+                    b.Property<int>("AppointmentTypeId")
                         .HasColumnType("int");
 
                     b.Property<bool>("CarnetCheked")
@@ -53,7 +53,39 @@ namespace PethouseAPI.Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("AppointmentTypeId")
+                        .IsUnique();
+
                     b.ToTable("Appointments");
+                });
+
+            modelBuilder.Entity("PethouseAPI.Data.Models.AppointmentType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("AppointmentType");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Hospedaje"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Guarderia"
+                        });
                 });
 
             modelBuilder.Entity("PethouseAPI.Data.Models.BreedSize", b =>
@@ -306,6 +338,9 @@ namespace PethouseAPI.Data.Migrations
                     b.Property<bool>("Wednesday")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("isActive")
+                        .HasColumnType("bit");
+
                     b.HasKey("Id");
 
                     b.HasIndex("AppointmentId");
@@ -313,6 +348,17 @@ namespace PethouseAPI.Data.Migrations
                     b.HasIndex("PetId");
 
                     b.ToTable("PetAppointments");
+                });
+
+            modelBuilder.Entity("PethouseAPI.Data.Models.Appointment", b =>
+                {
+                    b.HasOne("PethouseAPI.Data.Models.AppointmentType", "AppointmentType")
+                        .WithOne("Appointment")
+                        .HasForeignKey("PethouseAPI.Data.Models.Appointment", "AppointmentTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AppointmentType");
                 });
 
             modelBuilder.Entity("PethouseAPI.Data.Models.Pet", b =>
@@ -356,6 +402,12 @@ namespace PethouseAPI.Data.Migrations
             modelBuilder.Entity("PethouseAPI.Data.Models.Appointment", b =>
                 {
                     b.Navigation("PetsAppointments");
+                });
+
+            modelBuilder.Entity("PethouseAPI.Data.Models.AppointmentType", b =>
+                {
+                    b.Navigation("Appointment")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("PethouseAPI.Data.Models.BreedSize", b =>

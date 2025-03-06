@@ -1,5 +1,4 @@
 ﻿using System.Text.Json.Serialization;
-using PethouseAPI.Data.Models.Enums;
 
 namespace PethouseAPI.Data.Models;
 
@@ -11,7 +10,8 @@ public class Appointment
     public bool isTOSAppointmentDocumentSigned { get; set; }
     public bool MedicalChecked { get; set; }
     public bool CarnetCheked { get; set; }
-    public AppointmentType AppointmentType { get; set; }
+    public int AppointmentTypeId { get; set; }
+    public AppointmentType? AppointmentType { get; set; }
     [JsonIgnore]
     public ICollection<PetAppointment>? PetsAppointments { get; set; }
 
