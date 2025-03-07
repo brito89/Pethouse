@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PethouseAPI.Data.Models;
+using PethouseAPI.Data.Models.Enums;
 
 namespace PethouseAPI.Data
 {
@@ -115,18 +116,27 @@ namespace PethouseAPI.Data
                     OwnerId = 2
                 }
                 );
-            modelBuilder.Entity<AppointmentType>().HasData(
-                new AppointmentType
+            modelBuilder.Entity<Appointment>().HasData(
+                new Appointment
                 {
                     Id = 1,
-                    Name = "Hospedaje"
-                },
-                new AppointmentType
-                {
-                    Id = 2,
-                    Name = "Guarderia"
+                    AppointmentType = AppointmentType.Hospedaje,
+                    StartDate = new DateOnly(2022, 10, 10),
+                    EndDate = new DateOnly(2022, 12, 10),
+                    isTOSAppointmentDocumentSigned = true,
+                    MedicalChecked = true,
+                    CarnetCheked = true
+
                 }
                 );
+
+            //Prop configs
+            modelBuilder.Entity<Appointment>()
+                        .Property(o => o.AppointmentType)
+                        .HasConversion<string>();
+            //BreedSize
+            modelBuilder.Entity<BreedSize>().Property(o => o.PriceLowSeason).HasPrecision(18,2);
+            modelBuilder.Entity<BreedSize>().Property(o => o.PricePeakSeason).HasPrecision(18,2);
         }
 
     }

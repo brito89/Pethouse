@@ -1,18 +1,13 @@
 ﻿using PethouseAPI.Data.Models.Enums;
-using System.Text.Json.Serialization;
 
-namespace PethouseAPI.Data.Models;
+namespace PethouseAPI.Data.DTO;
 
-public class Appointment
+public class AppointmentDTO
 {
-    public int Id { get; set; }
     public DateOnly StartDate { get; set; }
     public DateOnly EndDate { get; set; }
     public bool isTOSAppointmentDocumentSigned { get; set; }
     public bool MedicalChecked { get; set; }
     public bool CarnetCheked { get; set; }
-    public AppointmentType AppointmentType { get; set; }
-    [JsonIgnore]
-    public ICollection<PetAppointment>? PetsAppointments { get; set; }
-
+    public String AppointmentType { get; set; }
 }

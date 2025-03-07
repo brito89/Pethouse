@@ -30,8 +30,9 @@ namespace PethouseAPI.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("AppointmentTypeId")
-                        .HasColumnType("int");
+                    b.Property<string>("AppointmentType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("CarnetCheked")
                         .HasColumnType("bit");
@@ -50,38 +51,18 @@ namespace PethouseAPI.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AppointmentTypeId")
-                        .IsUnique();
-
                     b.ToTable("Appointments");
-                });
-
-            modelBuilder.Entity("PethouseAPI.Data.Models.AppointmentType", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("AppointmentType");
 
                     b.HasData(
                         new
                         {
                             Id = 1,
-                            Name = "Hospedaje"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "Guarderia"
+                            AppointmentType = "Hospedaje",
+                            CarnetCheked = true,
+                            EndDate = new DateOnly(2022, 12, 10),
+                            MedicalChecked = true,
+                            StartDate = new DateOnly(2022, 10, 10),
+                            isTOSAppointmentDocumentSigned = true
                         });
                 });
 
@@ -101,9 +82,11 @@ namespace PethouseAPI.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("PriceLowSeason")
+                        .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<decimal>("PricePeakSeason")
+                        .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
@@ -347,17 +330,6 @@ namespace PethouseAPI.Data.Migrations
                     b.ToTable("PetAppointments");
                 });
 
-            modelBuilder.Entity("PethouseAPI.Data.Models.Appointment", b =>
-                {
-                    b.HasOne("PethouseAPI.Data.Models.AppointmentType", "AppointmentType")
-                        .WithOne("Appointment")
-                        .HasForeignKey("PethouseAPI.Data.Models.Appointment", "AppointmentTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("AppointmentType");
-                });
-
             modelBuilder.Entity("PethouseAPI.Data.Models.Pet", b =>
                 {
                     b.HasOne("PethouseAPI.Data.Models.BreedSize", "BreedSize")
@@ -399,12 +371,6 @@ namespace PethouseAPI.Data.Migrations
             modelBuilder.Entity("PethouseAPI.Data.Models.Appointment", b =>
                 {
                     b.Navigation("PetsAppointments");
-                });
-
-            modelBuilder.Entity("PethouseAPI.Data.Models.AppointmentType", b =>
-                {
-                    b.Navigation("Appointment")
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("PethouseAPI.Data.Models.BreedSize", b =>

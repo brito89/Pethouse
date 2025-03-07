@@ -6,7 +6,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PethouseAPI.Data;
+using PethouseAPI.Data.DTO;
 using PethouseAPI.Data.Models;
+using PethouseAPI.Data.Models.Enums;
 
 namespace PethouseAPI.Controllers
 {
@@ -23,9 +25,21 @@ namespace PethouseAPI.Controllers
 
         // GET: api/Appointments
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Appointment>>> GetAppointments()
+        public async Task<ActionResult<IEnumerable<AppointmentDTO>>> GetAppointments()
         {
-            return await _context.Appointments.Include(a => a.AppointmentType).ToListAsync();
+
+            var appointments = await _context.Appointments.Select(a => new AppointmentDTO
+            {
+                StartDate = a.StartDate,
+                EndDate = a.EndDate,
+                AppointmentType = a.AppointmentType.ToString(),
+                isTOSAppointmentDocumentSigned = a.isTOSAppointmentDocumentSigned,
+                MedicalChecked = a.MedicalChecked,
+                CarnetCheked = a.CarnetCheked
+            })
+            .ToListAsync();
+
+            return appointments;
         }
 
         // GET: api/Appointments/5
