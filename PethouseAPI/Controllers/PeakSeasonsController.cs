@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PethouseAPI.Data;
+using PethouseAPI.Data.DTO;
 using PethouseAPI.Data.Models;
 
 namespace PethouseAPI.Controllers
@@ -23,23 +24,36 @@ namespace PethouseAPI.Controllers
 
         // GET: api/PeakSeasons
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<PeakSeason>>> GetPeakSeasons()
+        public async Task<ActionResult<IEnumerable<PeakSeasonDTO>>> GetPeakSeasons()
         {
-            return await _context.PeakSeasons.ToListAsync();
+            return await _context.PeakSeasons.Select(ps => new PeakSeasonDTO
+            {
+                Name = ps.Name,
+                StartDate = ps.StartDate,
+                EndDate = ps.EndDate
+
+            }).ToListAsync();
         }
 
         // GET: api/PeakSeasons/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<PeakSeason>> GetPeakSeason(int id)
+        public async Task<ActionResult<PeakSeasonDTO>> GetPeakSeason(int id)
         {
-            var peakSeason = await _context.PeakSeasons.FindAsync(id);
+            var peakSeason = await _context.PeakSeasons.FirstOrDefaultAsync(ps => ps.Id == id);
 
             if (peakSeason == null)
             {
                 return NotFound();
             }
 
-            return peakSeason;
+            var result = new PeakSeasonDTO
+            {
+                Name = peakSeason.Name,
+                StartDate = peakSeason.StartDate,
+                EndDate = peakSeason.EndDate
+            };
+
+            return result;
         }
 
         // PUT: api/PeakSeasons/5

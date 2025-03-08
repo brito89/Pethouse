@@ -26,7 +26,8 @@ namespace PethouseAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<OwnerDTO>>> GetOwners()
         {
-            return await _context.Owners.Select(o => new OwnerDTO
+
+            var result = await _context.Owners.Include(o => o.Pets).ThenInclude(b => b.BreedSize).Select(o => new OwnerDTO
             {
                 Name = o.Name,
                 Email = o.Email,
@@ -34,22 +35,67 @@ namespace PethouseAPI.Controllers
                 Address = o.Address,
                 EmergencyContactName = o.EmergencyContactName,
                 EmergencyContactPhone = o.EmergencyContactPhone,
-                EmergencyContactRelationship = o.EmergencyContactRelationship
-            }).Include(o => o.Pets).ToListAsync();
+                EmergencyContactRelationship = o.EmergencyContactRelationship,
+                Pets = o.Pets.Select(p => new PetDTO
+                {
+                    Name = p.Name,
+                    DateOfBirth = p.DateOfBirth,
+                    BreedName = p.BreedName,
+                    IsMedicated = p.IsMedicated,
+                    Notes = p.Notes,
+                    BreedSize = new BreedSizeDTO
+                    {
+                        Name = p.BreedSize.Name,
+                        Label = p.BreedSize.Label,
+                        PriceLowSeason = p.BreedSize.PriceLowSeason,
+                        PricePeakSeason = p.BreedSize.PricePeakSeason
+                    }
+
+                }).ToList()
+            }).ToListAsync();
+
+            return result;
         }
 
         // GET: api/Owners/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Owner>> GetOwner(int id)
+        public async Task<ActionResult<OwnerDTO>> GetOwner(int id)
         {
-            var owner = await _context.Owners.Include(o => o.Pets).FirstOrDefaultAsync(o => o.Id == id);
+            var o = await _context.Owners.Include(o => o.Pets).ThenInclude(b => b.BreedSize).FirstOrDefaultAsync(o => o.Id == id);
 
-            if (owner == null)
+            if (o == null)
             {
                 return NotFound();
             }
 
-            return owner;
+            var result = new OwnerDTO
+            {
+                Name = o.Name,
+                Email = o.Email,
+                PhoneNumber = o.PhoneNumber,
+                Address = o.Address,
+                EmergencyContactName = o.EmergencyContactName,
+                EmergencyContactPhone = o.EmergencyContactPhone,
+                EmergencyContactRelationship = o.EmergencyContactRelationship,
+                Pets = o.Pets.Select(p => new PetDTO
+                {
+                    Name = p.Name,
+                    DateOfBirth = p.DateOfBirth,
+                    BreedName = p.BreedName,
+                    IsMedicated = p.IsMedicated,
+                    Notes = p.Notes,
+                    BreedSize = new BreedSizeDTO
+                    {
+                        Name = p.BreedSize.Name,
+                        Label = p.BreedSize.Label,
+                        PriceLowSeason = p.BreedSize.PriceLowSeason,
+                        PricePeakSeason = p.BreedSize.PricePeakSeason
+                    }
+
+                }).ToList()
+            };
+
+            return result;
         }
 
         // PUT: api/Owners/5

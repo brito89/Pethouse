@@ -9,8 +9,5 @@ public class PetDTO
     public string? BreedName { get; set; }
     public bool IsMedicated { get; set; }
     public string? Notes { get; set; }
-
-    public int BreedSizeId { get; set; }
-
-    public int OwnerId { get; set; }
+    public BreedSizeDTO? BreedSize { get; set; }
 }

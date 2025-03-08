@@ -13,11 +13,11 @@ public class Pet
     public string? Notes { get; set; }
 
     public int BreedSizeId { get; set; }
-    public BreedSize BreedSize { get; set; }
+    public BreedSize? BreedSize { get; set; }
 
     public int OwnerId { get; set; }
 
-    public Owner Owner { get; set; }
+    public Owner? Owner { get; set; }
     
     public ICollection<PetAppointment>? PetsAppointments { get; set; }
 

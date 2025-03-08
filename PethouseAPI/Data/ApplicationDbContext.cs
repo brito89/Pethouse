@@ -123,7 +123,7 @@ namespace PethouseAPI.Data
                     AppointmentType = AppointmentType.Hospedaje,
                     StartDate = new DateOnly(2022, 10, 10),
                     EndDate = new DateOnly(2022, 12, 10),
-                    isTOSAppointmentDocumentSigned = true,
+                    IsTOSAppointmentDocumentSigned = true,
                     MedicalChecked = true,
                     CarnetCheked = true
 

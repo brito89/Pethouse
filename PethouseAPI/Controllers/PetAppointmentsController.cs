@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PethouseAPI.Data;
+using PethouseAPI.Data.DTO;
 using PethouseAPI.Data.Models;
 
 namespace PethouseAPI.Controllers
@@ -23,24 +24,100 @@ namespace PethouseAPI.Controllers
 
         // GET: api/PetAppointments
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<PetAppointment>>> GetPetAppointments()
+        public async Task<ActionResult<IEnumerable<PetAppointmentDTO>>> GetPetAppointments()
         {
-            return await _context.PetAppointments.Include(a => a.Appointment)
-                                                 .ThenInclude(at => at.AppointmentType).ToListAsync();
+            var appt = await _context.PetAppointments.Include(a => a.Appointment)
+                                                     .Include(p => p.Pet)
+                                                     .ThenInclude(b => b.BreedSize)
+                                                     .ToListAsync();
+
+            var apptDTO = appt.Select(a => new PetAppointmentDTO
+            {
+                Pet = new PetDTO
+                {
+                    Name = a.Pet.Name,
+                    DateOfBirth = a.Pet.DateOfBirth,
+                    BreedName = a.Pet.BreedName,
+                    IsMedicated = a.Pet.IsMedicated,
+                    Notes = a.Pet.Notes,
+                    BreedSize = new BreedSizeDTO
+                    {
+                        Name = a.Pet.BreedSize.Name,
+                        Label = a.Pet.BreedSize.Label,
+                        PricePeakSeason = a.Pet.BreedSize.PricePeakSeason,
+                        PriceLowSeason = a.Pet.BreedSize.PriceLowSeason
+                    },
+                },
+                Appointment = new AppointmentDTO
+                {
+                    StartDate = a.Appointment.StartDate,
+                    EndDate = a.Appointment.EndDate,
+                    IsTOSAppointmentDocumentSigned = a.Appointment.IsTOSAppointmentDocumentSigned,
+                    MedicalChecked = a.Appointment.MedicalChecked,
+                    CarnetCheked = a.Appointment.CarnetCheked,
+                    AppointmentType = a.Appointment.AppointmentType.ToString()
+                },
+                Monday = a.Monday,
+                Tuesday = a.Tuesday,
+                Wednesday = a.Wednesday,
+                Thursday = a.Thursday,
+                Friday = a.Friday,
+                IsActive = a.IsActive
+            }).ToList();
+
+            return apptDTO;
         }
 
         // GET: api/PetAppointments/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<PetAppointment>> GetPetAppointment(int id)
+        public async Task<ActionResult<PetAppointmentDTO>> GetPetAppointment(int id)
         {
-            var petAppointment = await _context.PetAppointments.FindAsync(id);
+            var petAppointment = await _context.PetAppointments.Include(a => a.Appointment)
+                                                                 .Include(p => p.Pet)
+                                                                 .ThenInclude(b => b.BreedSize)
+                                                                 .FirstOrDefaultAsync(pa => pa.Id == id);
 
             if (petAppointment == null)
             {
                 return NotFound();
             }
 
-            return petAppointment;
+            var apptDTO = new PetAppointmentDTO
+            {
+                Pet = new PetDTO
+                {
+                    Name = petAppointment.Pet.Name,
+                    DateOfBirth = petAppointment.Pet.DateOfBirth,
+                    BreedName = petAppointment.Pet.BreedName,
+                    IsMedicated = petAppointment.Pet.IsMedicated,
+                    Notes = petAppointment.Pet.Notes,
+                    BreedSize = new BreedSizeDTO
+                    {
+                        Name = petAppointment.Pet.BreedSize.Name,
+                        Label = petAppointment.Pet.BreedSize.Label,
+                        PricePeakSeason = petAppointment.Pet.BreedSize.PricePeakSeason,
+                        PriceLowSeason = petAppointment.Pet.BreedSize.PriceLowSeason
+                    },
+                },
+                Appointment = new AppointmentDTO
+                {
+                    StartDate = petAppointment.Appointment.StartDate,
+                    EndDate = petAppointment.Appointment.EndDate,
+                    IsTOSAppointmentDocumentSigned = petAppointment.Appointment.IsTOSAppointmentDocumentSigned,
+                    MedicalChecked = petAppointment.Appointment.MedicalChecked,
+                    CarnetCheked = petAppointment.Appointment.CarnetCheked,
+                    AppointmentType = petAppointment.Appointment.AppointmentType.ToString()
+                },
+                Monday = petAppointment.Monday,
+                Tuesday = petAppointment.Tuesday,
+                Wednesday = petAppointment.Wednesday,
+                Thursday = petAppointment.Thursday,
+                Friday = petAppointment.Friday,
+                IsActive = petAppointment.IsActive
+            };
+
+
+            return apptDTO;
         }
 
         // PUT: api/PetAppointments/5

@@ -15,6 +15,6 @@ public class PetAppointment
     public bool Wednesday { get; set; } = false;
     public bool Thursday { get; set; } = false;
     public bool Friday { get; set; } = false;
-    public bool isActive { get; set; }
+    public bool IsActive { get; set; }
 
 }

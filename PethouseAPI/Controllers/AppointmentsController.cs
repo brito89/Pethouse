@@ -33,7 +33,7 @@ namespace PethouseAPI.Controllers
                 StartDate = a.StartDate,
                 EndDate = a.EndDate,
                 AppointmentType = a.AppointmentType.ToString(),
-                isTOSAppointmentDocumentSigned = a.isTOSAppointmentDocumentSigned,
+                IsTOSAppointmentDocumentSigned = a.IsTOSAppointmentDocumentSigned,
                 MedicalChecked = a.MedicalChecked,
                 CarnetCheked = a.CarnetCheked
             })
@@ -58,7 +58,7 @@ namespace PethouseAPI.Controllers
             {
                 StartDate = appointment.StartDate,
                 EndDate = appointment.EndDate,
-                isTOSAppointmentDocumentSigned = appointment.isTOSAppointmentDocumentSigned,
+                IsTOSAppointmentDocumentSigned = appointment.IsTOSAppointmentDocumentSigned,
                 AppointmentType = appointment.AppointmentType.ToString(),
                 MedicalChecked = appointment.MedicalChecked,
                 CarnetCheked = appointment.CarnetCheked
