@@ -24,7 +24,7 @@ namespace PethouseAPI.Data.Migrations
                     isTOSAppointmentDocumentSigned = table.Column<bool>(type: "bit", nullable: false),
                     MedicalChecked = table.Column<bool>(type: "bit", nullable: false),
                     CarnetCheked = table.Column<bool>(type: "bit", nullable: false),
-                    AppointmentType = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    AppointmentType = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -147,7 +147,7 @@ namespace PethouseAPI.Data.Migrations
             migrationBuilder.InsertData(
                 table: "Appointments",
                 columns: new[] { "Id", "AppointmentType", "CarnetCheked", "EndDate", "MedicalChecked", "StartDate", "isTOSAppointmentDocumentSigned" },
-                values: new object[] { 1, "Hospedaje", true, new DateOnly(2022, 12, 10), true, new DateOnly(2022, 10, 10), true });
+                values: new object[] { 1, 0, true, new DateOnly(2022, 12, 10), true, new DateOnly(2022, 10, 10), true });
 
             migrationBuilder.InsertData(
                 table: "BreedSizes",

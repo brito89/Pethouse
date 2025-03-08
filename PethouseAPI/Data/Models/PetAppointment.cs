@@ -7,7 +7,6 @@ public class PetAppointment
 {
     public int Id { get; set; }
     public int PetId { get; set; }
-    [JsonIgnore]
     public Pet? Pet { get; set; }
     public int AppointmentId { get; set; }    
     public Appointment? Appointment { get; set; }

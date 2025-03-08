@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PethouseAPI.Data;
+using PethouseAPI.Data.DTO;
 using PethouseAPI.Data.Models;
 
 namespace PethouseAPI.Controllers
@@ -23,14 +24,23 @@ namespace PethouseAPI.Controllers
 
         // GET: api/BreedSizes
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<BreedSize>>> GetBreedSizes()
+        public async Task<ActionResult<IEnumerable<BreedSizeDTO>>> GetBreedSizes()
         {
-            return await _context.BreedSizes.ToListAsync();
+            var result = await _context.BreedSizes.Select(a => new BreedSizeDTO
+            {
+                Name = a.Name,
+                Label = a.Label,
+                PricePeakSeason = a.PricePeakSeason,
+                PriceLowSeason = a.PriceLowSeason
+
+            }).ToListAsync();
+
+            return result;
         }
 
         // GET: api/BreedSizes/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<BreedSize>> GetBreedSize(int id)
+        public async Task<ActionResult<BreedSizeDTO>> GetBreedSize(int id)
         {
             var breedSize = await _context.BreedSizes.FindAsync(id);
 
@@ -39,7 +49,15 @@ namespace PethouseAPI.Controllers
                 return NotFound();
             }
 
-            return breedSize;
+            var result = new BreedSizeDTO
+            {
+                Name = breedSize.Name,
+                Label = breedSize.Label,
+                PricePeakSeason = breedSize.PricePeakSeason,
+                PriceLowSeason = breedSize.PriceLowSeason
+            };
+
+            return result;
         }
 
         // PUT: api/BreedSizes/5

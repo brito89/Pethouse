@@ -12,7 +12,7 @@ using PethouseAPI.Data;
 namespace PethouseAPI.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250307195621_InitialCreate")]
+    [Migration("20250307212823_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -33,9 +33,8 @@ namespace PethouseAPI.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("AppointmentType")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("AppointmentType")
+                        .HasColumnType("int");
 
                     b.Property<bool>("CarnetCheked")
                         .HasColumnType("bit");
@@ -60,7 +59,7 @@ namespace PethouseAPI.Data.Migrations
                         new
                         {
                             Id = 1,
-                            AppointmentType = "Hospedaje",
+                            AppointmentType = 0,
                             CarnetCheked = true,
                             EndDate = new DateOnly(2022, 12, 10),
                             MedicalChecked = true,

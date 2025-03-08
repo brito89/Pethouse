@@ -44,16 +44,27 @@ namespace PethouseAPI.Controllers
 
         // GET: api/Appointments/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Appointment>> GetAppointment(int id)
+        public async Task<ActionResult<AppointmentDTO>> GetAppointment(int id)
         {
-            var appointment = await _context.Appointments.Include(a => a.AppointmentType).FirstOrDefaultAsync(a => a.Id == id);
+            var appointment = await _context.Appointments.FirstOrDefaultAsync(a => a.Id == id);
+
 
             if (appointment == null)
             {
                 return NotFound();
             }
 
-            return appointment;
+            var result = new AppointmentDTO
+            {
+                StartDate = appointment.StartDate,
+                EndDate = appointment.EndDate,
+                isTOSAppointmentDocumentSigned = appointment.isTOSAppointmentDocumentSigned,
+                AppointmentType = appointment.AppointmentType.ToString(),
+                MedicalChecked = appointment.MedicalChecked,
+                CarnetCheked = appointment.CarnetCheked
+            };
+
+            return result;
         }
 
         // PUT: api/Appointments/5

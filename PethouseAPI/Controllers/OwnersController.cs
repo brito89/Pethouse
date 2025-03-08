@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PethouseAPI.Data;
+using PethouseAPI.Data.DTO;
 using PethouseAPI.Data.Models;
 
 namespace PethouseAPI.Controllers
@@ -23,9 +24,18 @@ namespace PethouseAPI.Controllers
 
         // GET: api/Owners
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Owner>>> GetOwners()
+        public async Task<ActionResult<IEnumerable<OwnerDTO>>> GetOwners()
         {
-            return await _context.Owners.Include(o => o.Pets).ToListAsync();
+            return await _context.Owners.Select(o => new OwnerDTO
+            {
+                Name = o.Name,
+                Email = o.Email,
+                PhoneNumber = o.PhoneNumber,
+                Address = o.Address,
+                EmergencyContactName = o.EmergencyContactName,
+                EmergencyContactPhone = o.EmergencyContactPhone,
+                EmergencyContactRelationship = o.EmergencyContactRelationship
+            }).Include(o => o.Pets).ToListAsync();
         }
 
         // GET: api/Owners/5

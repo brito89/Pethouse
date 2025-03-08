@@ -130,10 +130,6 @@ namespace PethouseAPI.Data
                 }
                 );
 
-            //Prop configs
-            modelBuilder.Entity<Appointment>()
-                        .Property(o => o.AppointmentType)
-                        .HasConversion<string>();
             //BreedSize
             modelBuilder.Entity<BreedSize>().Property(o => o.PriceLowSeason).HasPrecision(18,2);
             modelBuilder.Entity<BreedSize>().Property(o => o.PricePeakSeason).HasPrecision(18,2);

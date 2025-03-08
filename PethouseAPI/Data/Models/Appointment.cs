@@ -12,7 +12,6 @@ public class Appointment
     public bool MedicalChecked { get; set; }
     public bool CarnetCheked { get; set; }
     public AppointmentType AppointmentType { get; set; }
-    [JsonIgnore]
     public ICollection<PetAppointment>? PetsAppointments { get; set; }
 
 }
