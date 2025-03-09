@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -16,10 +17,12 @@ namespace PethouseAPI.Controllers
     public class PetsController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
+        private readonly IMapper _mapper;
 
-        public PetsController(ApplicationDbContext context)
+        public PetsController(ApplicationDbContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         // GET: api/Pets
@@ -27,32 +30,14 @@ namespace PethouseAPI.Controllers
         public async Task<ActionResult<IEnumerable<PetDTO>>> GetPets()
         {
             var pets = await _context.Pets.Include(b => b.BreedSize)
-                                      .ToListAsync();
+                                          .ToListAsync();
 
             if (pets == null)
             {
                 return NotFound();
             }
 
-
-            var result = pets.Select(p => new PetDTO
-            {
-                Name = p.Name,
-                DateOfBirth = p.DateOfBirth,
-                BreedName = p.BreedName,
-                IsMedicated = p.IsMedicated,
-                Notes = p.Notes,
-                BreedSize = new BreedSizeDTO
-                {
-                    Name = p.BreedSize.Name,
-                    Label = p.BreedSize.Label,
-                    PriceLowSeason = p.BreedSize.PriceLowSeason,
-                    PricePeakSeason = p.BreedSize.PricePeakSeason
-                }
-            }).ToList();
-
-            return result;
-
+            return _mapper.Map<List<PetDTO>>(pets);
 
         }
 
@@ -68,23 +53,7 @@ namespace PethouseAPI.Controllers
                 return NotFound();
             }
 
-            var result = new PetDTO
-            {
-                Name = pet.Name,
-                DateOfBirth = pet.DateOfBirth,
-                BreedName = pet.BreedName,
-                IsMedicated = pet.IsMedicated,
-                Notes = pet.Notes,
-                BreedSize = new BreedSizeDTO
-                {
-                    Name = pet.BreedSize.Name,
-                    Label = pet.BreedSize.Label,
-                    PriceLowSeason = pet.BreedSize.PriceLowSeason,
-                    PricePeakSeason = pet.BreedSize.PricePeakSeason
-                }
-            };
-
-            return result;
+            return _mapper.Map<PetDTO>(pet);
         }
 
         // PUT: api/Pets/5

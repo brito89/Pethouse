@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -16,23 +17,22 @@ namespace PethouseAPI.Controllers
     public class PeakSeasonsController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
+        private readonly IMapper _mapper;
 
-        public PeakSeasonsController(ApplicationDbContext context)
+        public PeakSeasonsController(ApplicationDbContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         // GET: api/PeakSeasons
         [HttpGet]
         public async Task<ActionResult<IEnumerable<PeakSeasonDTO>>> GetPeakSeasons()
         {
-            return await _context.PeakSeasons.Select(ps => new PeakSeasonDTO
-            {
-                Name = ps.Name,
-                StartDate = ps.StartDate,
-                EndDate = ps.EndDate
+            var peakSeasons = await _context.PeakSeasons.ToListAsync();
+            
+            return _mapper.Map<List<PeakSeasonDTO>>(peakSeasons);
 
-            }).ToListAsync();
         }
 
         // GET: api/PeakSeasons/5
@@ -46,14 +46,7 @@ namespace PethouseAPI.Controllers
                 return NotFound();
             }
 
-            var result = new PeakSeasonDTO
-            {
-                Name = peakSeason.Name,
-                StartDate = peakSeason.StartDate,
-                EndDate = peakSeason.EndDate
-            };
-
-            return result;
+            return _mapper.Map<PeakSeasonDTO>(peakSeason);
         }
 
         // PUT: api/PeakSeasons/5

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -17,10 +18,12 @@ namespace PethouseAPI.Controllers
     public class AppointmentsController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
+        private readonly IMapper _mapper;
 
-        public AppointmentsController(ApplicationDbContext context)
+        public AppointmentsController(ApplicationDbContext context,IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         // GET: api/Appointments
@@ -28,18 +31,10 @@ namespace PethouseAPI.Controllers
         public async Task<ActionResult<IEnumerable<AppointmentDTO>>> GetAppointments()
         {
 
-            var appointments = await _context.Appointments.Select(a => new AppointmentDTO
-            {
-                StartDate = a.StartDate,
-                EndDate = a.EndDate,
-                AppointmentType = a.AppointmentType.ToString(),
-                IsTOSAppointmentDocumentSigned = a.IsTOSAppointmentDocumentSigned,
-                MedicalChecked = a.MedicalChecked,
-                CarnetCheked = a.CarnetCheked
-            })
-            .ToListAsync();
+            var appointments = await _context.Appointments.ToListAsync();
 
-            return appointments;
+
+            return _mapper.Map<List<AppointmentDTO>>(appointments);
         }
 
         // GET: api/Appointments/5
@@ -54,17 +49,7 @@ namespace PethouseAPI.Controllers
                 return NotFound();
             }
 
-            var result = new AppointmentDTO
-            {
-                StartDate = appointment.StartDate,
-                EndDate = appointment.EndDate,
-                IsTOSAppointmentDocumentSigned = appointment.IsTOSAppointmentDocumentSigned,
-                AppointmentType = appointment.AppointmentType.ToString(),
-                MedicalChecked = appointment.MedicalChecked,
-                CarnetCheked = appointment.CarnetCheked
-            };
-
-            return result;
+            return _mapper.Map<AppointmentDTO>(appointment);
         }
 
         // PUT: api/Appointments/5

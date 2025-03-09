@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -16,86 +17,40 @@ namespace PethouseAPI.Controllers
     public class OwnersController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
+        private readonly IMapper _mapper;
 
-        public OwnersController(ApplicationDbContext context)
+        public OwnersController(ApplicationDbContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         // GET: api/Owners
         [HttpGet]
         public async Task<ActionResult<IEnumerable<OwnerDTO>>> GetOwners()
         {
+            
+            var owners = await _context.Owners.Include(o => o.Pets)
+                                              .ThenInclude(b => b.BreedSize)
+                                              .ToListAsync();
 
-            var result = await _context.Owners.Include(o => o.Pets).ThenInclude(b => b.BreedSize).Select(o => new OwnerDTO
-            {
-                Name = o.Name,
-                Email = o.Email,
-                PhoneNumber = o.PhoneNumber,
-                Address = o.Address,
-                EmergencyContactName = o.EmergencyContactName,
-                EmergencyContactPhone = o.EmergencyContactPhone,
-                EmergencyContactRelationship = o.EmergencyContactRelationship,
-                Pets = o.Pets.Select(p => new PetDTO
-                {
-                    Name = p.Name,
-                    DateOfBirth = p.DateOfBirth,
-                    BreedName = p.BreedName,
-                    IsMedicated = p.IsMedicated,
-                    Notes = p.Notes,
-                    BreedSize = new BreedSizeDTO
-                    {
-                        Name = p.BreedSize.Name,
-                        Label = p.BreedSize.Label,
-                        PriceLowSeason = p.BreedSize.PriceLowSeason,
-                        PricePeakSeason = p.BreedSize.PricePeakSeason
-                    }
-
-                }).ToList()
-            }).ToListAsync();
-
-            return result;
+            return _mapper.Map<List<OwnerDTO>>(owners);
         }
 
         // GET: api/Owners/5
         [HttpGet("{id}")]
         public async Task<ActionResult<OwnerDTO>> GetOwner(int id)
         {
-            var o = await _context.Owners.Include(o => o.Pets).ThenInclude(b => b.BreedSize).FirstOrDefaultAsync(o => o.Id == id);
+            var owner = await _context.Owners.Include(o => o.Pets)
+                                         .ThenInclude(b => b.BreedSize)
+                                         .FirstOrDefaultAsync(o => o.Id == id);
 
-            if (o == null)
+            if (owner == null)
             {
                 return NotFound();
             }
 
-            var result = new OwnerDTO
-            {
-                Name = o.Name,
-                Email = o.Email,
-                PhoneNumber = o.PhoneNumber,
-                Address = o.Address,
-                EmergencyContactName = o.EmergencyContactName,
-                EmergencyContactPhone = o.EmergencyContactPhone,
-                EmergencyContactRelationship = o.EmergencyContactRelationship,
-                Pets = o.Pets.Select(p => new PetDTO
-                {
-                    Name = p.Name,
-                    DateOfBirth = p.DateOfBirth,
-                    BreedName = p.BreedName,
-                    IsMedicated = p.IsMedicated,
-                    Notes = p.Notes,
-                    BreedSize = new BreedSizeDTO
-                    {
-                        Name = p.BreedSize.Name,
-                        Label = p.BreedSize.Label,
-                        PriceLowSeason = p.BreedSize.PriceLowSeason,
-                        PricePeakSeason = p.BreedSize.PricePeakSeason
-                    }
-
-                }).ToList()
-            };
-
-            return result;
+            return _mapper.Map<OwnerDTO>(owner);
         }
 
         // PUT: api/Owners/5
