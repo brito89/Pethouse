@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
-using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PethouseAPI.Data;
 using PethouseAPI.Data.DTO;
 using PethouseAPI.Data.Models;
-using PethouseAPI.Data.Models.Enums;
 
 namespace PethouseAPI.Controllers
 {

@@ -1,7 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using System.Text.Json.Serialization;
-
-namespace PethouseAPI.Data.Models;
+﻿namespace PethouseAPI.Data.Models;
 
 public class Pet
 {

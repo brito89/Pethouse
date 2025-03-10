@@ -1,6 +1,4 @@
-﻿using PethouseAPI.Data.Models.Enums;
-
-namespace PethouseAPI.Data.DTO;
+﻿namespace PethouseAPI.Data.DTO;
 
 public class AppointmentDTO
 {

@@ -1,6 +1,4 @@
 ﻿
-using System.Text.Json.Serialization;
-
 namespace PethouseAPI.Data.Models;
 
 public class PetAppointment

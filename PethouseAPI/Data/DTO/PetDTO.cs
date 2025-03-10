@@ -1,6 +1,4 @@
-﻿using PethouseAPI.Data.Models;
-
-namespace PethouseAPI.Data.DTO;
+﻿namespace PethouseAPI.Data.DTO;
 
 public class PetDTO
 {

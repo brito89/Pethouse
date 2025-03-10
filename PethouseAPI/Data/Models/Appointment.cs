@@ -1,5 +1,4 @@
 ﻿using PethouseAPI.Data.Models.Enums;
-using System.Text.Json.Serialization;
 
 namespace PethouseAPI.Data.Models;
 
