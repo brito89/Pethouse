@@ -1,0 +1,13 @@
+﻿services:
+  pethouseApi:
+    image: pethouseapi
+    build:
+      context: .
+      dockerfile: PethouseAPI/Dockerfile
+  pethouseDB:
+    image: mcr.microsoft.com/mssql/server
+    environment:
+      ACCEPT_EULA: 'Y'
+      MSSQL_SA_PASSWORD: 'Pass1q2w3e..'
+    ports:
+      - '1433:1433'

@@ -1,0 +1,21 @@
+# This is a generated file. Not intended for manual editing.
+services:
+  pethouseApi:
+    build:
+      context: "D:\\DEV\\Net Core\\PethouseAPI"
+      dockerfile: "PethouseAPI/Dockerfile"
+      target: "base"
+    command: []
+    entrypoint:
+    - "dotnet"
+    - "/app/bin/Debug/net9.0/PethouseAPI.dll"
+    environment:
+      ASPNETCORE_ENVIRONMENT: "Development"
+      DOTNET_USE_POLLING_FILE_WATCHER: "true"
+    image: "pethouseapi:dev"
+    ports: []
+    volumes:
+    - "C:\\Users\\BritoPC\\.nuget\\packages:/home/app/.nuget/packages"
+    - "D:\\DEV\\Net Core\\PethouseAPI\\PethouseAPI:/app:rw"
+    - "D:\\DEV\\Net Core\\PethouseAPI:/src:rw"
+    working_dir: "/app"
