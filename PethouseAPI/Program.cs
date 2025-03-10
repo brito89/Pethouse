@@ -16,7 +16,14 @@ var connectionString =
         + "'DefaultConnection' not found.");
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(connectionString));
+    options.UseSqlServer(connectionString,sqlOptions =>
+    {
+        sqlOptions.EnableRetryOnFailure(
+            maxRetryCount: 5, // Number of retry attempts
+            maxRetryDelay: TimeSpan.FromSeconds(10), // Delay between retries
+            errorNumbersToAdd: null // Add specific error numbers if needed
+        );
+    }));
 
 builder.Services.AddAutoMapper(typeof(MapperProfiler));
 
