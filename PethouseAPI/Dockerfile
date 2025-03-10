@@ -1,27 +1,23 @@
-﻿FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS base
-WORKDIR /app
-EXPOSE 8080
-EXPOSE 8081
-
-
+﻿# Use the .NET SDK image to build the application
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
+WORKDIR /app
 
 RUN dotnet tool install --global dotnet-ef
 ENV PATH="$PATH:/root/.dotnet/tools"
 
-ARG BUILD_CONFIGURATION=Release
-WORKDIR /src
-COPY ["PethouseAPI/PethouseAPI.csproj", "PethouseAPI/"]
-RUN dotnet restore "PethouseAPI/PethouseAPI.csproj"
-COPY . .
-WORKDIR "/src/PethouseAPI"
-RUN dotnet build "PethouseAPI.csproj" -c $BUILD_CONFIGURATION -o /app/build
+# Copy the project files and restore dependencies
+COPY PethouseAPI/*.csproj ./
+RUN dotnet restore
 
-FROM build AS publish
-ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "PethouseAPI.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+# Copy the rest of the application files and build it
+COPY . ./
+RUN dotnet publish "PethouseAPI" -c Release -o out
 
-FROM base AS final
+# Use the ASP.NET Core runtime image to run the application
+FROM mcr.microsoft.com/dotnet/aspnet:9.0
 WORKDIR /app
-COPY --from=publish /app/publish .
+COPY --from=build /app/out .
+
+EXPOSE 8080
+
 ENTRYPOINT ["dotnet", "PethouseAPI.dll"]

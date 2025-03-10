@@ -5,8 +5,7 @@
       context: .
       dockerfile: PethouseAPI/Dockerfile
     ports:
-      - "8080:8080"
-      - "8081:8081"
+      - "127.0.0.1:8080:8080"
     command: dotnet ef database update
     depends_on:
       - pethouseDB
@@ -17,3 +16,8 @@
       MSSQL_SA_PASSWORD: 'Pass1q2w3e..'
     ports:
       - '1433:1433'
+    volumes:
+      - sqlserver_data:/var/opt/mssql
+
+volumes:
+  sqlserver_data:
