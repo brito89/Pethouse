@@ -12,10 +12,10 @@ services:
     environment:
       ASPNETCORE_ENVIRONMENT: "Development"
       DOTNET_USE_POLLING_FILE_WATCHER: "true"
-    image: "pethouseapi:dev"
+    image: "pethouse:dev"
     ports: []
     volumes:
-    - "C:\\Users\\BritoPC\\.nuget\\packages:/home/app/.nuget/packages"
+    - "C:\\Users\\BritoPC\\.nuget\\packages:/root/.nuget/packages"
     - "D:\\DEV\\Net Core\\PethouseAPI\\PethouseAPI:/app:rw"
     - "D:\\DEV\\Net Core\\PethouseAPI:/src:rw"
     working_dir: "/app"

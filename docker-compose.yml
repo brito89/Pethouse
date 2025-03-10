@@ -1,9 +1,12 @@
 ﻿services:
   pethouseApi:
-    image: pethouseapi
+    image: pethouse
     build:
       context: .
       dockerfile: PethouseAPI/Dockerfile
+    ports:
+      - "127.0.0.1:8080:8080"
+      - "127.0.0.1:8081:8081"
   pethouseDB:
     image: mcr.microsoft.com/mssql/server
     environment:
