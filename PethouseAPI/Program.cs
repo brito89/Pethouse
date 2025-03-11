@@ -32,7 +32,13 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.MapScalarApiReference();
+    app.MapScalarApiReference(options =>
+    {
+        options.Servers =
+        [
+            new ScalarServer("http://localhost:8080")
+        ];
+    });
     app.MapOpenApi();
 }
 

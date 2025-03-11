@@ -4,9 +4,12 @@
     build:
       context: .
       dockerfile: PethouseAPI/Dockerfile
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      DOTNET_RUNNING_IN_CONTAINER: true
+      ASPNETCORE_URLS: http://*:8080
     ports:
-      - "127.0.0.1:8080:8080"
-    command: dotnet ef database update
+      - "8080:8080"
     depends_on:
       - pethouseDB
   pethouseDB:

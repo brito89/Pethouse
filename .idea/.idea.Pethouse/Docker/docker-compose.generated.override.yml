@@ -1,5 +1,4 @@
 # This is a generated file. Not intended for manual editing.
-version: "3.9"
 services:
   pethouseApi:
     build:
@@ -10,8 +9,7 @@ services:
     entrypoint:
     - "dotnet"
     - "/app/bin/Debug/net9.0/PethouseAPI.dll"
-    environment:
-      ASPNETCORE_ENVIRONMENT: "Development"
+    environment: {}
     image: "pethouse:dev"
     ports: []
     volumes:
