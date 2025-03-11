@@ -1,6 +1,0 @@
-@PethouseAPI_HostAddress = http://localhost:5238
-
-GET {{PethouseAPI_HostAddress}}/api/Owners
-Accept: application/json
-
-###

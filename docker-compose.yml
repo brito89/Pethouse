@@ -1,0 +1,26 @@
+﻿services:
+  pethouseApi:
+    image: pethouse
+    build:
+      context: .
+      dockerfile: PethouseAPI/Dockerfile
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      DOTNET_RUNNING_IN_CONTAINER: true
+      ASPNETCORE_URLS: http://*:8080
+    ports:
+      - "8080:8080"
+    depends_on:
+      - pethouseDB
+  pethouseDB:
+    image: mcr.microsoft.com/mssql/server
+    environment:
+      ACCEPT_EULA: 'Y'
+      MSSQL_SA_PASSWORD: 'Pass1q2w3e..'
+    ports:
+      - '1433:1433'
+    volumes:
+      - sqlserver_data:/var/opt/mssql
+
+volumes:
+  sqlserver_data:
