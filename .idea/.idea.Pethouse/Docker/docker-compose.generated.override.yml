@@ -2,7 +2,7 @@
 services:
   pethouseApi:
     build:
-      context: "D:\\DEV\\Net Core\\PethouseAPI"
+      context: "C:\\Users\\cocob\\source\\repos\\Pethouse"
       dockerfile: "PethouseAPI/Dockerfile"
       target: "build"
     command: []
@@ -13,7 +13,7 @@ services:
     image: "pethouse:dev"
     ports: []
     volumes:
-    - "C:\\Users\\BritoPC\\.nuget\\packages:/root/.nuget/packages"
-    - "D:\\DEV\\Net Core\\PethouseAPI\\PethouseAPI:/app:rw"
-    - "D:\\DEV\\Net Core\\PethouseAPI:/src:rw"
+    - "C:\\Users\\cocob\\.nuget\\packages:/root/.nuget/packages"
+    - "C:\\Users\\cocob\\source\\repos\\Pethouse\\PethouseAPI:/app:rw"
+    - "C:\\Users\\cocob\\source\\repos\\Pethouse:/src:rw"
     working_dir: "/app"
