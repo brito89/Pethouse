@@ -1,7 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using System.Text.Json.Serialization;
-
-namespace PethouseAPI.Data.Models;
+﻿namespace PethouseAPI.Data.Models;
 
 public class BreedSize
 {
@@ -10,7 +7,6 @@ public class BreedSize
     public string? Label { get; set; }
     public decimal PricePeakSeason { get; set; }
     public decimal PriceLowSeason { get; set; }
-    [JsonIgnore]
     public ICollection<Pet>? Pets { get; set; }
 
 }

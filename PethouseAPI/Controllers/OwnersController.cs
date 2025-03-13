@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PethouseAPI.Data;
+using PethouseAPI.Data.DTO;
 using PethouseAPI.Data.Models;
 
 namespace PethouseAPI.Controllers
@@ -15,31 +12,40 @@ namespace PethouseAPI.Controllers
     public class OwnersController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
+        private readonly IMapper _mapper;
 
-        public OwnersController(ApplicationDbContext context)
+        public OwnersController(ApplicationDbContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         // GET: api/Owners
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Owner>>> GetOwners()
+        public async Task<ActionResult<IEnumerable<OwnerDTO>>> GetOwners()
         {
-            return await _context.Owners.Include(o => o.Pets).ToListAsync();
+            
+            var owners = await _context.Owners.Include(o => o.Pets)
+                                              .ThenInclude(b => b.BreedSize)
+                                              .ToListAsync();
+
+            return _mapper.Map<List<OwnerDTO>>(owners);
         }
 
         // GET: api/Owners/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Owner>> GetOwner(int id)
+        public async Task<ActionResult<OwnerDTO>> GetOwner(int id)
         {
-            var owner = await _context.Owners.Include(o => o.Pets).FirstOrDefaultAsync(o => o.Id == id);
+            var owner = await _context.Owners.Include(o => o.Pets)
+                                         .ThenInclude(b => b.BreedSize)
+                                         .FirstOrDefaultAsync(o => o.Id == id);
 
             if (owner == null)
             {
                 return NotFound();
             }
 
-            return owner;
+            return _mapper.Map<OwnerDTO>(owner);
         }
 
         // PUT: api/Owners/5

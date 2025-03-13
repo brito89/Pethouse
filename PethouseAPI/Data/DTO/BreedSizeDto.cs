@@ -1,6 +1,6 @@
 ﻿namespace PethouseAPI.Data.DTO;
 
-public class BreedSizeDto
+public class BreedSizeDTO
 {
     public required string Name { get; set; }
     public string? Label { get; set; }

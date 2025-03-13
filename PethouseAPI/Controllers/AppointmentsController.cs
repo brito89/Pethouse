@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PethouseAPI.Data;
 using PethouseAPI.Data.DTO;
 using PethouseAPI.Data.Models;
-using PethouseAPI.Data.Models.Enums;
 
 namespace PethouseAPI.Controllers
 {
@@ -17,10 +12,12 @@ namespace PethouseAPI.Controllers
     public class AppointmentsController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
+        private readonly IMapper _mapper;
 
-        public AppointmentsController(ApplicationDbContext context)
+        public AppointmentsController(ApplicationDbContext context,IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         // GET: api/Appointments
@@ -28,32 +25,25 @@ namespace PethouseAPI.Controllers
         public async Task<ActionResult<IEnumerable<AppointmentDTO>>> GetAppointments()
         {
 
-            var appointments = await _context.Appointments.Select(a => new AppointmentDTO
-            {
-                StartDate = a.StartDate,
-                EndDate = a.EndDate,
-                AppointmentType = a.AppointmentType.ToString(),
-                isTOSAppointmentDocumentSigned = a.isTOSAppointmentDocumentSigned,
-                MedicalChecked = a.MedicalChecked,
-                CarnetCheked = a.CarnetCheked
-            })
-            .ToListAsync();
+            var appointments = await _context.Appointments.ToListAsync();
 
-            return appointments;
+
+            return _mapper.Map<List<AppointmentDTO>>(appointments);
         }
 
         // GET: api/Appointments/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Appointment>> GetAppointment(int id)
+        public async Task<ActionResult<AppointmentDTO>> GetAppointment(int id)
         {
-            var appointment = await _context.Appointments.Include(a => a.AppointmentType).FirstOrDefaultAsync(a => a.Id == id);
+            var appointment = await _context.Appointments.FirstOrDefaultAsync(a => a.Id == id);
+
 
             if (appointment == null)
             {
                 return NotFound();
             }
 
-            return appointment;
+            return _mapper.Map<AppointmentDTO>(appointment);
         }
 
         // PUT: api/Appointments/5

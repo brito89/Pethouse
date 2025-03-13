@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PethouseAPI.Data;
+using PethouseAPI.Data.DTO;
 using PethouseAPI.Data.Models;
 
 namespace PethouseAPI.Controllers
@@ -15,32 +12,41 @@ namespace PethouseAPI.Controllers
     public class PetAppointmentsController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
+        private readonly IMapper _mapper;
 
-        public PetAppointmentsController(ApplicationDbContext context)
+        public PetAppointmentsController(ApplicationDbContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         // GET: api/PetAppointments
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<PetAppointment>>> GetPetAppointments()
+        public async Task<ActionResult<IEnumerable<PetAppointmentDTO>>> GetPetAppointments()
         {
-            return await _context.PetAppointments.Include(a => a.Appointment)
-                                                 .ThenInclude(at => at.AppointmentType).ToListAsync();
+            var appt = await _context.PetAppointments.Include(a => a.Appointment)
+                                                     .Include(p => p.Pet)
+                                                        .ThenInclude(b => b.BreedSize)
+                                                     .ToListAsync();            
+
+            return _mapper.Map<List<PetAppointmentDTO>>(appt);
         }
 
         // GET: api/PetAppointments/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<PetAppointment>> GetPetAppointment(int id)
+        public async Task<ActionResult<PetAppointmentDTO>> GetPetAppointment(int id)
         {
-            var petAppointment = await _context.PetAppointments.FindAsync(id);
+            var petAppointment = await _context.PetAppointments.Include(a => a.Appointment)
+                                                                 .Include(p => p.Pet)
+                                                                 .ThenInclude(b => b.BreedSize)
+                                                                 .FirstOrDefaultAsync(pa => pa.Id == id);
 
             if (petAppointment == null)
             {
                 return NotFound();
-            }
+            }           
 
-            return petAppointment;
+            return _mapper.Map<PetAppointmentDTO>(petAppointment);
         }
 
         // PUT: api/PetAppointments/5

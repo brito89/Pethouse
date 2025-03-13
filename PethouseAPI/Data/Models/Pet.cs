@@ -1,7 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using System.Text.Json.Serialization;
-
-namespace PethouseAPI.Data.Models;
+﻿namespace PethouseAPI.Data.Models;
 
 public class Pet
 {
@@ -13,11 +10,11 @@ public class Pet
     public string? Notes { get; set; }
 
     public int BreedSizeId { get; set; }
-    public BreedSize BreedSize { get; set; }
+    public BreedSize? BreedSize { get; set; }
 
     public int OwnerId { get; set; }
 
-    public Owner Owner { get; set; }
+    public Owner? Owner { get; set; }
     
     public ICollection<PetAppointment>? PetsAppointments { get; set; }
 

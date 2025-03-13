@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PethouseAPI.Data;
+using PethouseAPI.Data.DTO;
 using PethouseAPI.Data.Models;
 
 namespace PethouseAPI.Controllers
@@ -15,31 +12,36 @@ namespace PethouseAPI.Controllers
     public class PeakSeasonsController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
+        private readonly IMapper _mapper;
 
-        public PeakSeasonsController(ApplicationDbContext context)
+        public PeakSeasonsController(ApplicationDbContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         // GET: api/PeakSeasons
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<PeakSeason>>> GetPeakSeasons()
+        public async Task<ActionResult<IEnumerable<PeakSeasonDTO>>> GetPeakSeasons()
         {
-            return await _context.PeakSeasons.ToListAsync();
+            var peakSeasons = await _context.PeakSeasons.ToListAsync();
+            
+            return _mapper.Map<List<PeakSeasonDTO>>(peakSeasons);
+
         }
 
         // GET: api/PeakSeasons/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<PeakSeason>> GetPeakSeason(int id)
+        public async Task<ActionResult<PeakSeasonDTO>> GetPeakSeason(int id)
         {
-            var peakSeason = await _context.PeakSeasons.FindAsync(id);
+            var peakSeason = await _context.PeakSeasons.FirstOrDefaultAsync(ps => ps.Id == id);
 
             if (peakSeason == null)
             {
                 return NotFound();
             }
 
-            return peakSeason;
+            return _mapper.Map<PeakSeasonDTO>(peakSeason);
         }
 
         // PUT: api/PeakSeasons/5

@@ -1,7 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using System.Text.Json.Serialization;
-
-namespace PethouseAPI.Data.Models;
+﻿namespace PethouseAPI.Data.Models;
 
 public class Owner
 {
@@ -20,7 +17,7 @@ public class Owner
     public required string EmergencyContactPhone { get; set; }
 
     public required string EmergencyContactRelationship { get; set; }
-    [JsonIgnore]
+
     public ICollection<Pet>? Pets { get; set; }
 }
 

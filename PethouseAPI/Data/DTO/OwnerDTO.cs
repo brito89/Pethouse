@@ -15,4 +15,6 @@ public class OwnerDTO
     public required string EmergencyContactPhone { get; set; }
 
     public required string EmergencyContactRelationship { get; set; }
+
+    public ICollection<PetDTO>? Pets { get; set; }
 }

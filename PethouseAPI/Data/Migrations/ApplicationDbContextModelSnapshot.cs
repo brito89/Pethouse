@@ -30,9 +30,8 @@ namespace PethouseAPI.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("AppointmentType")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("AppointmentType")
+                        .HasColumnType("int");
 
                     b.Property<bool>("CarnetCheked")
                         .HasColumnType("bit");
@@ -40,14 +39,14 @@ namespace PethouseAPI.Data.Migrations
                     b.Property<DateOnly>("EndDate")
                         .HasColumnType("date");
 
+                    b.Property<bool>("IsTOSAppointmentDocumentSigned")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("MedicalChecked")
                         .HasColumnType("bit");
 
                     b.Property<DateOnly>("StartDate")
                         .HasColumnType("date");
-
-                    b.Property<bool>("isTOSAppointmentDocumentSigned")
-                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 
@@ -57,12 +56,12 @@ namespace PethouseAPI.Data.Migrations
                         new
                         {
                             Id = 1,
-                            AppointmentType = "Hospedaje",
+                            AppointmentType = 0,
                             CarnetCheked = true,
                             EndDate = new DateOnly(2022, 12, 10),
+                            IsTOSAppointmentDocumentSigned = true,
                             MedicalChecked = true,
-                            StartDate = new DateOnly(2022, 10, 10),
-                            isTOSAppointmentDocumentSigned = true
+                            StartDate = new DateOnly(2022, 10, 10)
                         });
                 });
 
@@ -303,6 +302,9 @@ namespace PethouseAPI.Data.Migrations
                     b.Property<bool>("Friday")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("Monday")
                         .HasColumnType("bit");
 
@@ -316,9 +318,6 @@ namespace PethouseAPI.Data.Migrations
                         .HasColumnType("bit");
 
                     b.Property<bool>("Wednesday")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("isActive")
                         .HasColumnType("bit");
 
                     b.HasKey("Id");

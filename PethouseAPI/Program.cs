@@ -22,6 +22,8 @@ builder.Services.AddOpenApi();
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 
+builder.Services.AddAutoMapper(typeof(MapperProfiler));
+
 var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())

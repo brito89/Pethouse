@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PethouseAPI.Data;
+using PethouseAPI.Data.DTO;
 using PethouseAPI.Data.Models;
 
 namespace PethouseAPI.Controllers
@@ -15,22 +12,26 @@ namespace PethouseAPI.Controllers
     public class BreedSizesController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
+        private readonly IMapper _mapper;
 
-        public BreedSizesController(ApplicationDbContext context)
+        public BreedSizesController(ApplicationDbContext context,IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         // GET: api/BreedSizes
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<BreedSize>>> GetBreedSizes()
+        public async Task<ActionResult<IEnumerable<BreedSizeDTO>>> GetBreedSizes()
         {
-            return await _context.BreedSizes.ToListAsync();
+            var breedSizes = await _context.BreedSizes.ToListAsync();
+
+            return _mapper.Map<List<BreedSizeDTO>>(breedSizes);
         }
 
         // GET: api/BreedSizes/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<BreedSize>> GetBreedSize(int id)
+        public async Task<ActionResult<BreedSizeDTO>> GetBreedSize(int id)
         {
             var breedSize = await _context.BreedSizes.FindAsync(id);
 
@@ -39,7 +40,7 @@ namespace PethouseAPI.Controllers
                 return NotFound();
             }
 
-            return breedSize;
+            return _mapper.Map<BreedSizeDTO>(breedSize);
         }
 
         // PUT: api/BreedSizes/5

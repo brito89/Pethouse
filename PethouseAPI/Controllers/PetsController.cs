@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PethouseAPI.Data;
+using PethouseAPI.Data.DTO;
 using PethouseAPI.Data.Models;
 
 namespace PethouseAPI.Controllers
@@ -15,37 +12,43 @@ namespace PethouseAPI.Controllers
     public class PetsController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
+        private readonly IMapper _mapper;
 
-        public PetsController(ApplicationDbContext context)
+        public PetsController(ApplicationDbContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         // GET: api/Pets
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Pet>>> GetPets()
+        public async Task<ActionResult<IEnumerable<PetDTO>>> GetPets()
         {
-            return await _context.Pets.Include(b => b.BreedSize)
-                                      .Include(pa => pa.PetsAppointments)
-                                      .Include(o => o.Owner)
-                                      .ToListAsync();
-        }
+            var pets = await _context.Pets.Include(b => b.BreedSize)
+                                          .ToListAsync();
 
-        // GET: api/Pets/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Pet>> GetPet(int id)
-        {
-            var pet = await _context.Pets.Include(b => b.BreedSize)
-                                         .Include(pa => pa.PetsAppointments)
-                                         .Include(o => o.Owner)
-                                         .FirstOrDefaultAsync(p => p.Id == id);
-
-            if (pet == null)
+            if (pets == null)
             {
                 return NotFound();
             }
 
-            return pet;
+            return _mapper.Map<List<PetDTO>>(pets);
+
+        }
+
+        // GET: api/Pets/5
+        [HttpGet("{id}")]
+        public async Task<ActionResult<PetDTO>> GetPet(int id)
+        {
+            var pet = await _context.Pets.Include(b => b.BreedSize)
+                                         .FirstOrDefaultAsync(p => p.Id == id);
+
+            if (pet == null || pet.BreedSize == null)
+            {
+                return NotFound();
+            }
+
+            return _mapper.Map<PetDTO>(pet);
         }
 
         // PUT: api/Pets/5
