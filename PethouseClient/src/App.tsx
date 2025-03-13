@@ -6,7 +6,7 @@ function App() {
 
   useEffect(() => {
     // Fetch the API
-    fetch("http://localhost:8080/api/Appointments") // Use service name as hostname
+    fetch("http://localhost:8080/api/Pets") // Use service name as hostname
       .then((response) => {
         if (!response.ok) {
           throw new Error("Network response was not ok");
@@ -28,8 +28,8 @@ function App() {
   }
 
   return (
-    <div>
-      <h1 style={{ margin: "50px" }}>Awesome Data from .NET API:</h1>
+    <div class="bg-black">
+      <h1 style={{ margin: "50px" }}>Reload is working API DATA:</h1>
       <pre style={{ margin: "50px" }}>{JSON.stringify(data, null, 2)}</pre>
     </div>
   );
