@@ -1,8 +1,8 @@
 # This is a generated file. Not intended for manual editing.
 services:
-  pethouseApi:
+  api:
     build:
-      context: "C:\\Users\\cocob\\source\\repos\\Pethouse"
+      context: "D:\\DEV\\Net Core\\Pethouse"
       dockerfile: "PethouseAPI/Dockerfile"
       target: "build"
     command: []
@@ -10,10 +10,10 @@ services:
     - "dotnet"
     - "/app/bin/Debug/net9.0/PethouseAPI.dll"
     environment: {}
-    image: "pethouse:dev"
+    image: "pethouseapi:dev"
     ports: []
     volumes:
-    - "C:\\Users\\cocob\\.nuget\\packages:/root/.nuget/packages"
-    - "C:\\Users\\cocob\\source\\repos\\Pethouse\\PethouseAPI:/app:rw"
-    - "C:\\Users\\cocob\\source\\repos\\Pethouse:/src:rw"
+    - "C:\\Users\\BritoPC\\.nuget\\packages:/root/.nuget/packages"
+    - "D:\\DEV\\Net Core\\Pethouse\\PethouseAPI:/app:rw"
+    - "D:\\DEV\\Net Core\\Pethouse:/src:rw"
     working_dir: "/app"
