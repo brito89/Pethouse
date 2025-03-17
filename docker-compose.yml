@@ -13,14 +13,24 @@
     depends_on:
       - db
   db:
-    image: mcr.microsoft.com/mssql/server
-    environment:
-      ACCEPT_EULA: 'Y'
-      MSSQL_SA_PASSWORD: 'Pass1q2w3e..'
+    image: postgres
+    restart: always
+    shm_size: 128mb
     ports:
-      - '1433:1433'
+      - 5432:5432
     volumes:
-      - sqlserver_data:/var/opt/mssql
+      - db_data:/dev/shm
+    environment:
+      POSTGRES_PASSWORD: Pass1q2w3e..
+      POSTGRES_USER: PetAdmin
+      POSTGRES_DB: Pethouse
+#  db:
+#    image: mcr.microsoft.com/mssql/server
+#    environment:
+#      ACCEPT_EULA: 'Y'
+#      MSSQL_SA_PASSWORD: 'Pass1q2w3e..'
+#    volumes:
+#      - sqlserver_data:/var/opt/mssql
   client:
     image: pethouseclient
     build:
@@ -37,4 +47,4 @@
       - api
 
 volumes:
-  sqlserver_data:
+  db_data:

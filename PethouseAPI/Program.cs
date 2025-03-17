@@ -13,19 +13,12 @@ builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 
 var connectionString =
-    builder.Configuration.GetConnectionString("DefaultConnection")
+    builder.Configuration.GetConnectionString("PSQL")
         ?? throw new InvalidOperationException("Connection string"
         + "'DefaultConnection' not found.");
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(connectionString, sqlOptions =>
-    {
-        sqlOptions.EnableRetryOnFailure(
-            maxRetryCount: 5, // Number of retry attempts
-            maxRetryDelay: TimeSpan.FromSeconds(10), // Delay between retries
-            errorNumbersToAdd: null // Add specific error numbers if needed
-        );
-    }));
+    options.UseNpgsql(connectionString));
 
 builder.Services.AddCors(options =>
 {
