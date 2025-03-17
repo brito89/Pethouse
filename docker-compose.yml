@@ -1,4 +1,21 @@
 ﻿services:
+  db:
+    image: postgres
+    restart: always
+    shm_size: 128mb
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: Pass1q2w3e..
+      POSTGRES_USER: PetAdmin
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 10s
+      retries: 5
+      start_period: 30s
+      timeout: 10s
   api:
     image: pethouseapi
     build:
@@ -11,26 +28,8 @@
     ports:
       - "8080:8080"
     depends_on:
-      - db
-  db:
-    image: postgres
-    restart: always
-    shm_size: 128mb
-    ports:
-      - 5432:5432
-    volumes:
-      - db_data:/dev/shm
-    environment:
-      POSTGRES_PASSWORD: Pass1q2w3e..
-      POSTGRES_USER: PetAdmin
-      POSTGRES_DB: Pethouse
-#  db:
-#    image: mcr.microsoft.com/mssql/server
-#    environment:
-#      ACCEPT_EULA: 'Y'
-#      MSSQL_SA_PASSWORD: 'Pass1q2w3e..'
-#    volumes:
-#      - sqlserver_data:/var/opt/mssql
+      db:
+        condition: service_healthy
   client:
     image: pethouseclient
     build:
