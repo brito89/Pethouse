@@ -28,7 +28,7 @@ function App() {
   }
 
   return (
-    <div class="bg-black">
+    <div>
       <h1 style={{ margin: "50px" }}>Reload is working API DATA:</h1>
       <pre style={{ margin: "50px" }}>{JSON.stringify(data, null, 2)}</pre>
     </div>
