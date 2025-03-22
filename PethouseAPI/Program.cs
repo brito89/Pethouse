@@ -23,11 +23,10 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(connectionString));
 
 
-builder.Services.AddIdentity<Owner,IdentityRole>()
-    .AddEntityFrameworkStores<ApplicationDbContext>()
-    .AddDefaultTokenProviders();
+builder.Services.AddIdentityApiEndpoints<Owner>()
+    .AddEntityFrameworkStores<ApplicationDbContext>();
 
-builder.Services.AddAuthentication();
+//builder.Services.AddAuthentication();
 
 builder.Services.AddAuthorization();
 

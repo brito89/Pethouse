@@ -12,7 +12,7 @@ using PethouseAPI.Data;
 namespace PethouseAPI.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250320065520_InitialCreate")]
+    [Migration("20250322203536_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -166,6 +166,18 @@ namespace PethouseAPI.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Appointments");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            AppointmentType = 0,
+                            CarnetCheked = true,
+                            EndDate = new DateOnly(2022, 12, 10),
+                            IsTOSAppointmentDocumentSigned = true,
+                            MedicalChecked = true,
+                            StartDate = new DateOnly(2022, 10, 10)
+                        });
                 });
 
             modelBuilder.Entity("PethouseAPI.Data.Models.BreedSize", b =>
@@ -194,6 +206,40 @@ namespace PethouseAPI.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("BreedSizes");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Label = "0-10kg",
+                            Name = "Small",
+                            PriceLowSeason = 120.00m,
+                            PricePeakSeason = 100.00m
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Label = "11-25kg",
+                            Name = "Medium",
+                            PriceLowSeason = 170.00m,
+                            PricePeakSeason = 150.00m
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Label = "26-40kg",
+                            Name = "Large",
+                            PriceLowSeason = 220.00m,
+                            PricePeakSeason = 200.00m
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Label = "41-60kg",
+                            Name = "Extra Large",
+                            PriceLowSeason = 270.00m,
+                            PricePeakSeason = 250.00m
+                        });
                 });
 
             modelBuilder.Entity("PethouseAPI.Data.Models.Owner", b =>
@@ -261,6 +307,44 @@ namespace PethouseAPI.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Owner");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "1",
+                            AccessFailedCount = 0,
+                            Address = "calle falsa 123",
+                            ConcurrencyStamp = "47426f50-6b9a-47bc-a63c-a9718273b854",
+                            Email = "coco@gmail.com",
+                            EmailConfirmed = false,
+                            EmergencyContactName = "Dai",
+                            EmergencyContactPhone = "9992923923",
+                            EmergencyContactRelationship = "Sister",
+                            LockoutEnabled = false,
+                            Name = "Juan Brito",
+                            PhoneNumber = "9992923563",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "b7ea1b98-7b4a-4135-9d08-2216bddaf63d",
+                            TwoFactorEnabled = false
+                        },
+                        new
+                        {
+                            Id = "2",
+                            AccessFailedCount = 0,
+                            Address = "calle falsa 123",
+                            ConcurrencyStamp = "15a65ac4-0818-4348-8d29-fe0eb73a0477",
+                            Email = "dai@gmail.com",
+                            EmailConfirmed = false,
+                            EmergencyContactName = "coco",
+                            EmergencyContactPhone = "111111111",
+                            EmergencyContactRelationship = "brother",
+                            LockoutEnabled = false,
+                            Name = "Dai",
+                            PhoneNumber = "99999999",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "a3947257-03fa-483d-9bc9-8aa8da5c5a0c",
+                            TwoFactorEnabled = false
+                        });
                 });
 
             modelBuilder.Entity("PethouseAPI.Data.Models.PeakSeason", b =>
@@ -324,6 +408,41 @@ namespace PethouseAPI.Data.Migrations
                     b.HasIndex("OwnerId");
 
                     b.ToTable("Pets");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            BreedName = "Chihuahua",
+                            BreedSizeId = 1,
+                            DateOfBirth = new DateOnly(2022, 10, 10),
+                            IsMedicated = false,
+                            Name = "Pocha",
+                            Notes = "None",
+                            OwnerId = "1"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            BreedName = "Border",
+                            BreedSizeId = 2,
+                            DateOfBirth = new DateOnly(2020, 10, 10),
+                            IsMedicated = false,
+                            Name = "Luna",
+                            Notes = "None",
+                            OwnerId = "1"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            BreedName = "Labrador",
+                            BreedSizeId = 3,
+                            DateOfBirth = new DateOnly(2018, 10, 10),
+                            IsMedicated = false,
+                            Name = "Coco",
+                            Notes = "None",
+                            OwnerId = "2"
+                        });
                 });
 
             modelBuilder.Entity("PethouseAPI.Data.Models.PetAppointment", b =>

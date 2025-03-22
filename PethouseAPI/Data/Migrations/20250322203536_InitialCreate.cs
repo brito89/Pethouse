@@ -4,6 +4,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace PethouseAPI.Data.Migrations
 {
     /// <inheritdoc />
@@ -233,6 +235,41 @@ namespace PethouseAPI.Data.Migrations
                         principalTable: "Pets",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.InsertData(
+                table: "Appointments",
+                columns: new[] { "Id", "AppointmentType", "CarnetCheked", "EndDate", "IsTOSAppointmentDocumentSigned", "MedicalChecked", "StartDate" },
+                values: new object[] { 1, 0, true, new DateOnly(2022, 12, 10), true, true, new DateOnly(2022, 10, 10) });
+
+            migrationBuilder.InsertData(
+                table: "BreedSizes",
+                columns: new[] { "Id", "Label", "Name", "PriceLowSeason", "PricePeakSeason" },
+                values: new object[,]
+                {
+                    { 1, "0-10kg", "Small", 120.00m, 100.00m },
+                    { 2, "11-25kg", "Medium", 170.00m, 150.00m },
+                    { 3, "26-40kg", "Large", 220.00m, 200.00m },
+                    { 4, "41-60kg", "Extra Large", 270.00m, 250.00m }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Owner",
+                columns: new[] { "Id", "AccessFailedCount", "Address", "ConcurrencyStamp", "Email", "EmailConfirmed", "EmergencyContactName", "EmergencyContactPhone", "EmergencyContactRelationship", "LockoutEnabled", "LockoutEnd", "Name", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
+                values: new object[,]
+                {
+                    { "1", 0, "calle falsa 123", "47426f50-6b9a-47bc-a63c-a9718273b854", "coco@gmail.com", false, "Dai", "9992923923", "Sister", false, null, "Juan Brito", null, null, null, "9992923563", false, "b7ea1b98-7b4a-4135-9d08-2216bddaf63d", false, null },
+                    { "2", 0, "calle falsa 123", "15a65ac4-0818-4348-8d29-fe0eb73a0477", "dai@gmail.com", false, "coco", "111111111", "brother", false, null, "Dai", null, null, null, "99999999", false, "a3947257-03fa-483d-9bc9-8aa8da5c5a0c", false, null }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Pets",
+                columns: new[] { "Id", "BreedName", "BreedSizeId", "DateOfBirth", "IsMedicated", "Name", "Notes", "OwnerId" },
+                values: new object[,]
+                {
+                    { 1, "Chihuahua", 1, new DateOnly(2022, 10, 10), false, "Pocha", "None", "1" },
+                    { 2, "Border", 2, new DateOnly(2020, 10, 10), false, "Luna", "None", "1" },
+                    { 3, "Labrador", 3, new DateOnly(2018, 10, 10), false, "Coco", "None", "2" }
                 });
 
             migrationBuilder.CreateIndex(
