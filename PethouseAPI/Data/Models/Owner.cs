@@ -1,22 +1,19 @@
-﻿namespace PethouseAPI.Data.Models;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
-public class Owner
+namespace PethouseAPI.Data.Models;
+
+public class Owner : IdentityUser
 {
-    public int Id { get; set; }
-
-    public required string Name { get; set; }
-
-    public required string Email { get; set; }
-
-    public required string PhoneNumber { get; set; }
+    public  string? Name { get; set; }
 
     public string? Address { get; set; }
 
-    public required string EmergencyContactName { get; set; }
+    public  string? EmergencyContactName { get; set; }
 
-    public required string EmergencyContactPhone { get; set; }
+    public  string? EmergencyContactPhone { get; set; }
 
-    public required string EmergencyContactRelationship { get; set; }
+    public  string? EmergencyContactRelationship { get; set; }
 
     public ICollection<Pet>? Pets { get; set; }
 }

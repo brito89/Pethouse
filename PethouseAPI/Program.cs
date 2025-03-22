@@ -1,5 +1,7 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using PethouseAPI.Data;
+using PethouseAPI.Data.Models;
 using PethouseAPI.Data.Seed;
 using Scalar.AspNetCore;
 
@@ -19,6 +21,15 @@ var connectionString =
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(connectionString));
+
+
+builder.Services.AddIdentity<Owner,IdentityRole>()
+    .AddEntityFrameworkStores<ApplicationDbContext>()
+    .AddDefaultTokenProviders();
+
+builder.Services.AddAuthentication();
+
+builder.Services.AddAuthorization();
 
 builder.Services.AddCors(options =>
 {
@@ -53,6 +64,8 @@ if (app.Environment.IsDevelopment())
     });
     app.MapOpenApi();
 }
+
+app.MapIdentityApi<Owner>();
 
 app.UseHttpsRedirection();
 

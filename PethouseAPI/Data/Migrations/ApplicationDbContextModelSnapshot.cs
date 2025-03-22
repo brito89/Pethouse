@@ -17,10 +17,122 @@ namespace PethouseAPI.Data.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "9.0.2")
+                .HasAnnotation("ProductVersion", "9.0.3")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("text");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("text");
+
+                    b.Property<string>("NormalizedName")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Roles");
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ClaimType")
+                        .HasColumnType("text");
+
+                    b.Property<string>("ClaimValue")
+                        .HasColumnType("text");
+
+                    b.Property<string>("RoleId")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("RoleClaims");
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ClaimType")
+                        .HasColumnType("text");
+
+                    b.Property<string>("ClaimValue")
+                        .HasColumnType("text");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("UserClaims");
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
+                {
+                    b.Property<string>("LoginProvider")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("ProviderDisplayName")
+                        .HasColumnType("text");
+
+                    b.Property<string>("ProviderKey")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("text");
+
+                    b.ToTable("UserLogins");
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
+                {
+                    b.Property<string>("RoleId")
+                        .HasColumnType("text");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("text");
+
+                    b.ToTable("UserRoles");
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
+                {
+                    b.Property<string>("LoginProvider")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Value")
+                        .HasColumnType("text");
+
+                    b.ToTable("UserTokens");
+                });
 
             modelBuilder.Entity("PethouseAPI.Data.Models.Appointment", b =>
                 {
@@ -51,18 +163,6 @@ namespace PethouseAPI.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Appointments");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            AppointmentType = 0,
-                            CarnetCheked = true,
-                            EndDate = new DateOnly(2022, 12, 10),
-                            IsTOSAppointmentDocumentSigned = true,
-                            MedicalChecked = true,
-                            StartDate = new DateOnly(2022, 10, 10)
-                        });
                 });
 
             modelBuilder.Entity("PethouseAPI.Data.Models.BreedSize", b =>
@@ -91,104 +191,73 @@ namespace PethouseAPI.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("BreedSizes");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Label = "0-10kg",
-                            Name = "Small",
-                            PriceLowSeason = 120.00m,
-                            PricePeakSeason = 100.00m
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Label = "11-25kg",
-                            Name = "Medium",
-                            PriceLowSeason = 170.00m,
-                            PricePeakSeason = 150.00m
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Label = "26-40kg",
-                            Name = "Large",
-                            PriceLowSeason = 220.00m,
-                            PricePeakSeason = 200.00m
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Label = "41-60kg",
-                            Name = "Extra Large",
-                            PriceLowSeason = 270.00m,
-                            PricePeakSeason = 250.00m
-                        });
                 });
 
             modelBuilder.Entity("PethouseAPI.Data.Models.Owner", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                    b.Property<string>("Id")
+                        .HasColumnType("text");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                    b.Property<int>("AccessFailedCount")
+                        .HasColumnType("integer");
 
                     b.Property<string>("Address")
                         .HasColumnType("text");
 
-                    b.Property<string>("Email")
-                        .IsRequired()
+                    b.Property<string>("ConcurrencyStamp")
                         .HasColumnType("text");
 
+                    b.Property<string>("Email")
+                        .HasColumnType("text");
+
+                    b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("boolean");
+
                     b.Property<string>("EmergencyContactName")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("EmergencyContactPhone")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("EmergencyContactRelationship")
-                        .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<bool>("LockoutEnabled")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTimeOffset?>("LockoutEnd")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<string>("Name")
-                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("NormalizedEmail")
+                        .HasColumnType("text");
+
+                    b.Property<string>("NormalizedUserName")
+                        .HasColumnType("text");
+
+                    b.Property<string>("PasswordHash")
                         .HasColumnType("text");
 
                     b.Property<string>("PhoneNumber")
-                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<bool>("PhoneNumberConfirmed")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("SecurityStamp")
+                        .HasColumnType("text");
+
+                    b.Property<bool>("TwoFactorEnabled")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("UserName")
                         .HasColumnType("text");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Owners");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Address = "calle falsa 123",
-                            Email = "coco@gmail.com",
-                            EmergencyContactName = "Dai",
-                            EmergencyContactPhone = "9992923923",
-                            EmergencyContactRelationship = "Sister",
-                            Name = "Juan Brito",
-                            PhoneNumber = "9992923563"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Address = "calle falsa 123",
-                            Email = "dai@gmail.com",
-                            EmergencyContactName = "coco",
-                            EmergencyContactPhone = "111111111",
-                            EmergencyContactRelationship = "brother",
-                            Name = "Dai",
-                            PhoneNumber = "99999999"
-                        });
+                    b.ToTable("Owner");
                 });
 
             modelBuilder.Entity("PethouseAPI.Data.Models.PeakSeason", b =>
@@ -241,8 +310,9 @@ namespace PethouseAPI.Data.Migrations
                     b.Property<string>("Notes")
                         .HasColumnType("text");
 
-                    b.Property<int>("OwnerId")
-                        .HasColumnType("integer");
+                    b.Property<string>("OwnerId")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -251,41 +321,6 @@ namespace PethouseAPI.Data.Migrations
                     b.HasIndex("OwnerId");
 
                     b.ToTable("Pets");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            BreedName = "Chihuahua",
-                            BreedSizeId = 1,
-                            DateOfBirth = new DateOnly(2022, 10, 10),
-                            IsMedicated = false,
-                            Name = "Pocha",
-                            Notes = "None",
-                            OwnerId = 1
-                        },
-                        new
-                        {
-                            Id = 2,
-                            BreedName = "Border",
-                            BreedSizeId = 2,
-                            DateOfBirth = new DateOnly(2020, 10, 10),
-                            IsMedicated = false,
-                            Name = "Luna",
-                            Notes = "None",
-                            OwnerId = 1
-                        },
-                        new
-                        {
-                            Id = 3,
-                            BreedName = "Labrador",
-                            BreedSizeId = 3,
-                            DateOfBirth = new DateOnly(2018, 10, 10),
-                            IsMedicated = false,
-                            Name = "Coco",
-                            Notes = "None",
-                            OwnerId = 2
-                        });
                 });
 
             modelBuilder.Entity("PethouseAPI.Data.Models.PetAppointment", b =>
