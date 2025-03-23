@@ -291,8 +291,8 @@ namespace PethouseAPI.Data.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "Address", "ConcurrencyStamp", "Email", "EmailConfirmed", "EmergencyContactName", "EmergencyContactPhone", "EmergencyContactRelationship", "LockoutEnabled", "LockoutEnd", "Name", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { "0bee3397-ce64-4984-b580-10e879543d53", 0, "calle falsa 123", "5a7a81b1-6663-42f4-9f71-fdd5a265f037", "dai@gmail.com", true, "coco", "111111111", "brother", false, null, "Dai", "DAI@EXAMPLE.COM", "DAI", "AQAAAAIAAYagAAAAEPaVTBk9lpYQqLrFL+03K2dW9iYLOyTWqUz05g3/nsv+mers/cQ28tSdIt94ifosOA==", "99999999", false, "599644fa-d678-4e4c-bc47-3f19e25067db", false, "DAI" },
-                    { "82d6dd18-6ef9-44a1-9d42-8062050c8acd", 0, "calle falsa 123", "14b79b06-0bec-4129-99bb-5d126ebf48e8", "coco@gmail.com", true, "Dai", "9992923923", "Sister", false, null, "Juan Brito", "ADMIN@EXAMPLE.COM", "ADMIN", "AQAAAAIAAYagAAAAEPaVTBk9lpYQqLrFL+03K2dW9iYLOyTWqUz05g3/nsv+mers/cQ28tSdIt94ifosOA==", "9992923563", false, "22f8c254-7918-4706-810d-2ed8209d32fa", false, "admin" }
+                    { "0bee3397-ce64-4984-b580-10e879543d53", 0, "calle falsa 123", "5a7a81b1-6663-42f4-9f71-fdd5a265f037", "dai@gmail.com", true, "coco", "111111111", "brother", false, null, "Dai", "DAI@EXAMPLE.COM", "DAI", "AQAAAAIAAYagAAAAEPykSEZqG9hNjTQMRW35Fu9nEtoq+vIeC1+pTuyXBr6w/6aaaP7ewjl1/LRX85MaBw==", "99999999", false, "599644fa-d678-4e4c-bc47-3f19e25067db", false, "DAI" },
+                    { "82d6dd18-6ef9-44a1-9d42-8062050c8acd", 0, "calle falsa 123", "14b79b06-0bec-4129-99bb-5d126ebf48e8", "coco@gmail.com", true, "Dai", "9992923923", "Sister", false, null, "Juan Brito", "ADMIN@EXAMPLE.COM", "ADMIN", "AQAAAAIAAYagAAAAEPykSEZqG9hNjTQMRW35Fu9nEtoq+vIeC1+pTuyXBr6w/6aaaP7ewjl1/LRX85MaBw==", "9992923563", false, "22f8c254-7918-4706-810d-2ed8209d32fa", false, "admin" }
                 });
 
             migrationBuilder.InsertData(

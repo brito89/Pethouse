@@ -12,7 +12,7 @@ using PethouseAPI.Data;
 namespace PethouseAPI.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250323044001_InitialCreate")]
+    [Migration("20250323205807_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -364,7 +364,7 @@ namespace PethouseAPI.Data.Migrations
                             Name = "Juan Brito",
                             NormalizedEmail = "ADMIN@EXAMPLE.COM",
                             NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAIAAYagAAAAEPaVTBk9lpYQqLrFL+03K2dW9iYLOyTWqUz05g3/nsv+mers/cQ28tSdIt94ifosOA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEPykSEZqG9hNjTQMRW35Fu9nEtoq+vIeC1+pTuyXBr6w/6aaaP7ewjl1/LRX85MaBw==",
                             PhoneNumber = "9992923563",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "22f8c254-7918-4706-810d-2ed8209d32fa",
@@ -386,7 +386,7 @@ namespace PethouseAPI.Data.Migrations
                             Name = "Dai",
                             NormalizedEmail = "DAI@EXAMPLE.COM",
                             NormalizedUserName = "DAI",
-                            PasswordHash = "AQAAAAIAAYagAAAAEPaVTBk9lpYQqLrFL+03K2dW9iYLOyTWqUz05g3/nsv+mers/cQ28tSdIt94ifosOA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEPykSEZqG9hNjTQMRW35Fu9nEtoq+vIeC1+pTuyXBr6w/6aaaP7ewjl1/LRX85MaBw==",
                             PhoneNumber = "99999999",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "599644fa-d678-4e4c-bc47-3f19e25067db",
