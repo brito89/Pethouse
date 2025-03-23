@@ -28,6 +28,7 @@ namespace PethouseAPI.Data
             var roleId = "23fa8dce-e71a-4b38-b87b-6d3a563117f9";
             var userId = "82d6dd18-6ef9-44a1-9d42-8062050c8acd";
             var userId2 = "0bee3397-ce64-4984-b580-10e879543d53";
+            var passwordHash = "AQAAAAIAAYagAAAAEPykSEZqG9hNjTQMRW35Fu9nEtoq+vIeC1+pTuyXBr6w/6aaaP7ewjl1/LRX85MaBw==";
             
             modelBuilder.Entity<IdentityRole>().HasData(new IdentityRole
             {
@@ -51,7 +52,7 @@ namespace PethouseAPI.Data
                     NormalizedUserName = "ADMIN",
                     NormalizedEmail = "ADMIN@EXAMPLE.COM",
                     EmailConfirmed = true,
-                    PasswordHash = "AQAAAAIAAYagAAAAEPaVTBk9lpYQqLrFL+03K2dW9iYLOyTWqUz05g3/nsv+mers/cQ28tSdIt94ifosOA==",
+                    PasswordHash = passwordHash,
                     SecurityStamp = "22f8c254-7918-4706-810d-2ed8209d32fa",
                     ConcurrencyStamp = "14b79b06-0bec-4129-99bb-5d126ebf48e8"
                 },
@@ -69,7 +70,7 @@ namespace PethouseAPI.Data
                     NormalizedUserName = "DAI",
                     NormalizedEmail = "DAI@EXAMPLE.COM",
                     EmailConfirmed = true,
-                    PasswordHash = "AQAAAAIAAYagAAAAEPaVTBk9lpYQqLrFL+03K2dW9iYLOyTWqUz05g3/nsv+mers/cQ28tSdIt94ifosOA==",
+                    PasswordHash = passwordHash,
                     SecurityStamp = "599644fa-d678-4e4c-bc47-3f19e25067db",
                     ConcurrencyStamp = "5a7a81b1-6663-42f4-9f71-fdd5a265f037"
             
