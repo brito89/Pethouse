@@ -12,7 +12,7 @@ public class Pet
     public int BreedSizeId { get; set; }
     public BreedSize? BreedSize { get; set; }
 
-    public int OwnerId { get; set; }
+    public required string OwnerId { get; set; }
 
     public Owner? Owner { get; set; }
     

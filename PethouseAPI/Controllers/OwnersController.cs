@@ -34,7 +34,7 @@ namespace PethouseAPI.Controllers
 
         // GET: api/Owners/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<OwnerDTO>> GetOwner(int id)
+        public async Task<ActionResult<OwnerDTO>> GetOwner(string id)
         {
             var owner = await _context.Owners.Include(o => o.Pets)
                                          .ThenInclude(b => b.BreedSize)
@@ -51,7 +51,7 @@ namespace PethouseAPI.Controllers
         // PUT: api/Owners/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutOwner(int id, Owner owner)
+        public async Task<IActionResult> PutOwner(string id, Owner owner)
         {
             if (id != owner.Id)
             {
@@ -106,7 +106,7 @@ namespace PethouseAPI.Controllers
             return NoContent();
         }
 
-        private bool OwnerExists(int id)
+        private bool OwnerExists(string id)
         {
             return _context.Owners.Any(e => e.Id == id);
         }
