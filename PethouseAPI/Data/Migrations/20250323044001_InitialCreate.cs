@@ -33,23 +33,21 @@ namespace PethouseAPI.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "BreedSizes",
+                name: "AspNetRoles",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Name = table.Column<string>(type: "text", nullable: false),
-                    Label = table.Column<string>(type: "text", nullable: true),
-                    PricePeakSeason = table.Column<decimal>(type: "numeric(18,2)", precision: 18, scale: 2, nullable: false),
-                    PriceLowSeason = table.Column<decimal>(type: "numeric(18,2)", precision: 18, scale: 2, nullable: false)
+                    Id = table.Column<string>(type: "text", nullable: false),
+                    Name = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    NormalizedName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    ConcurrencyStamp = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_BreedSizes", x => x.Id);
+                    table.PrimaryKey("PK_AspNetRoles", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Owner",
+                name: "AspNetUsers",
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "text", nullable: false),
@@ -58,10 +56,10 @@ namespace PethouseAPI.Data.Migrations
                     EmergencyContactName = table.Column<string>(type: "text", nullable: true),
                     EmergencyContactPhone = table.Column<string>(type: "text", nullable: true),
                     EmergencyContactRelationship = table.Column<string>(type: "text", nullable: true),
-                    UserName = table.Column<string>(type: "text", nullable: true),
-                    NormalizedUserName = table.Column<string>(type: "text", nullable: true),
-                    Email = table.Column<string>(type: "text", nullable: true),
-                    NormalizedEmail = table.Column<string>(type: "text", nullable: true),
+                    UserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    NormalizedUserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    Email = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    NormalizedEmail = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     EmailConfirmed = table.Column<bool>(type: "boolean", nullable: false),
                     PasswordHash = table.Column<string>(type: "text", nullable: true),
                     SecurityStamp = table.Column<string>(type: "text", nullable: true),
@@ -75,7 +73,23 @@ namespace PethouseAPI.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Owner", x => x.Id);
+                    table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "BreedSizes",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Name = table.Column<string>(type: "text", nullable: false),
+                    Label = table.Column<string>(type: "text", nullable: true),
+                    PricePeakSeason = table.Column<decimal>(type: "numeric(18,2)", precision: 18, scale: 2, nullable: false),
+                    PriceLowSeason = table.Column<decimal>(type: "numeric(18,2)", precision: 18, scale: 2, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_BreedSizes", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -94,84 +108,109 @@ namespace PethouseAPI.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "RoleClaims",
+                name: "AspNetRoleClaims",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    RoleId = table.Column<string>(type: "text", nullable: true),
+                    RoleId = table.Column<string>(type: "text", nullable: false),
                     ClaimType = table.Column<string>(type: "text", nullable: true),
                     ClaimValue = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_RoleClaims", x => x.Id);
+                    table.PrimaryKey("PK_AspNetRoleClaims", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AspNetRoleClaims_AspNetRoles_RoleId",
+                        column: x => x.RoleId,
+                        principalTable: "AspNetRoles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Roles",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "text", nullable: false),
-                    Name = table.Column<string>(type: "text", nullable: true),
-                    NormalizedName = table.Column<string>(type: "text", nullable: true),
-                    ConcurrencyStamp = table.Column<string>(type: "text", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Roles", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "UserClaims",
+                name: "AspNetUserClaims",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    UserId = table.Column<string>(type: "text", nullable: true),
+                    UserId = table.Column<string>(type: "text", nullable: false),
                     ClaimType = table.Column<string>(type: "text", nullable: true),
                     ClaimValue = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UserClaims", x => x.Id);
+                    table.PrimaryKey("PK_AspNetUserClaims", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AspNetUserClaims_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "UserLogins",
+                name: "AspNetUserLogins",
                 columns: table => new
                 {
                     LoginProvider = table.Column<string>(type: "text", nullable: false),
                     ProviderKey = table.Column<string>(type: "text", nullable: false),
                     ProviderDisplayName = table.Column<string>(type: "text", nullable: true),
-                    UserId = table.Column<string>(type: "text", nullable: true)
+                    UserId = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
+                    table.PrimaryKey("PK_AspNetUserLogins", x => new { x.LoginProvider, x.ProviderKey });
+                    table.ForeignKey(
+                        name: "FK_AspNetUserLogins_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "UserRoles",
+                name: "AspNetUserRoles",
                 columns: table => new
                 {
-                    UserId = table.Column<string>(type: "text", nullable: true),
-                    RoleId = table.Column<string>(type: "text", nullable: true)
+                    UserId = table.Column<string>(type: "text", nullable: false),
+                    RoleId = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
+                    table.PrimaryKey("PK_AspNetUserRoles", x => new { x.UserId, x.RoleId });
+                    table.ForeignKey(
+                        name: "FK_AspNetUserRoles_AspNetRoles_RoleId",
+                        column: x => x.RoleId,
+                        principalTable: "AspNetRoles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_AspNetUserRoles_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "UserTokens",
+                name: "AspNetUserTokens",
                 columns: table => new
                 {
-                    UserId = table.Column<string>(type: "text", nullable: true),
+                    UserId = table.Column<string>(type: "text", nullable: false),
                     LoginProvider = table.Column<string>(type: "text", nullable: false),
                     Name = table.Column<string>(type: "text", nullable: false),
                     Value = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
+                    table.PrimaryKey("PK_AspNetUserTokens", x => new { x.UserId, x.LoginProvider, x.Name });
+                    table.ForeignKey(
+                        name: "FK_AspNetUserTokens_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -192,15 +231,15 @@ namespace PethouseAPI.Data.Migrations
                 {
                     table.PrimaryKey("PK_Pets", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Pets_BreedSizes_BreedSizeId",
-                        column: x => x.BreedSizeId,
-                        principalTable: "BreedSizes",
+                        name: "FK_Pets_AspNetUsers_OwnerId",
+                        column: x => x.OwnerId,
+                        principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Pets_Owner_OwnerId",
-                        column: x => x.OwnerId,
-                        principalTable: "Owner",
+                        name: "FK_Pets_BreedSizes_BreedSizeId",
+                        column: x => x.BreedSizeId,
+                        principalTable: "BreedSizes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -243,6 +282,20 @@ namespace PethouseAPI.Data.Migrations
                 values: new object[] { 1, 0, true, new DateOnly(2022, 12, 10), true, true, new DateOnly(2022, 10, 10) });
 
             migrationBuilder.InsertData(
+                table: "AspNetRoles",
+                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
+                values: new object[] { "23fa8dce-e71a-4b38-b87b-6d3a563117f9", null, "Admin", "ADMIN" });
+
+            migrationBuilder.InsertData(
+                table: "AspNetUsers",
+                columns: new[] { "Id", "AccessFailedCount", "Address", "ConcurrencyStamp", "Email", "EmailConfirmed", "EmergencyContactName", "EmergencyContactPhone", "EmergencyContactRelationship", "LockoutEnabled", "LockoutEnd", "Name", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
+                values: new object[,]
+                {
+                    { "0bee3397-ce64-4984-b580-10e879543d53", 0, "calle falsa 123", "5a7a81b1-6663-42f4-9f71-fdd5a265f037", "dai@gmail.com", true, "coco", "111111111", "brother", false, null, "Dai", "DAI@EXAMPLE.COM", "DAI", "AQAAAAIAAYagAAAAEPaVTBk9lpYQqLrFL+03K2dW9iYLOyTWqUz05g3/nsv+mers/cQ28tSdIt94ifosOA==", "99999999", false, "599644fa-d678-4e4c-bc47-3f19e25067db", false, "DAI" },
+                    { "82d6dd18-6ef9-44a1-9d42-8062050c8acd", 0, "calle falsa 123", "14b79b06-0bec-4129-99bb-5d126ebf48e8", "coco@gmail.com", true, "Dai", "9992923923", "Sister", false, null, "Juan Brito", "ADMIN@EXAMPLE.COM", "ADMIN", "AQAAAAIAAYagAAAAEPaVTBk9lpYQqLrFL+03K2dW9iYLOyTWqUz05g3/nsv+mers/cQ28tSdIt94ifosOA==", "9992923563", false, "22f8c254-7918-4706-810d-2ed8209d32fa", false, "admin" }
+                });
+
+            migrationBuilder.InsertData(
                 table: "BreedSizes",
                 columns: new[] { "Id", "Label", "Name", "PriceLowSeason", "PricePeakSeason" },
                 values: new object[,]
@@ -254,23 +307,51 @@ namespace PethouseAPI.Data.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "Owner",
-                columns: new[] { "Id", "AccessFailedCount", "Address", "ConcurrencyStamp", "Email", "EmailConfirmed", "EmergencyContactName", "EmergencyContactPhone", "EmergencyContactRelationship", "LockoutEnabled", "LockoutEnd", "Name", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[,]
-                {
-                    { "1", 0, "calle falsa 123", "47426f50-6b9a-47bc-a63c-a9718273b854", "coco@gmail.com", false, "Dai", "9992923923", "Sister", false, null, "Juan Brito", null, null, null, "9992923563", false, "b7ea1b98-7b4a-4135-9d08-2216bddaf63d", false, null },
-                    { "2", 0, "calle falsa 123", "15a65ac4-0818-4348-8d29-fe0eb73a0477", "dai@gmail.com", false, "coco", "111111111", "brother", false, null, "Dai", null, null, null, "99999999", false, "a3947257-03fa-483d-9bc9-8aa8da5c5a0c", false, null }
-                });
-
-            migrationBuilder.InsertData(
                 table: "Pets",
                 columns: new[] { "Id", "BreedName", "BreedSizeId", "DateOfBirth", "IsMedicated", "Name", "Notes", "OwnerId" },
                 values: new object[,]
                 {
-                    { 1, "Chihuahua", 1, new DateOnly(2022, 10, 10), false, "Pocha", "None", "1" },
-                    { 2, "Border", 2, new DateOnly(2020, 10, 10), false, "Luna", "None", "1" },
-                    { 3, "Labrador", 3, new DateOnly(2018, 10, 10), false, "Coco", "None", "2" }
+                    { 1, "Chihuahua", 1, new DateOnly(2022, 10, 10), false, "Pocha", "None", "82d6dd18-6ef9-44a1-9d42-8062050c8acd" },
+                    { 2, "Border", 2, new DateOnly(2020, 10, 10), false, "Luna", "None", "82d6dd18-6ef9-44a1-9d42-8062050c8acd" },
+                    { 3, "Labrador", 3, new DateOnly(2018, 10, 10), false, "Coco", "None", "0bee3397-ce64-4984-b580-10e879543d53" }
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AspNetRoleClaims_RoleId",
+                table: "AspNetRoleClaims",
+                column: "RoleId");
+
+            migrationBuilder.CreateIndex(
+                name: "RoleNameIndex",
+                table: "AspNetRoles",
+                column: "NormalizedName",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AspNetUserClaims_UserId",
+                table: "AspNetUserClaims",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AspNetUserLogins_UserId",
+                table: "AspNetUserLogins",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AspNetUserRoles_RoleId",
+                table: "AspNetUserRoles",
+                column: "RoleId");
+
+            migrationBuilder.CreateIndex(
+                name: "EmailIndex",
+                table: "AspNetUsers",
+                column: "NormalizedEmail");
+
+            migrationBuilder.CreateIndex(
+                name: "UserNameIndex",
+                table: "AspNetUsers",
+                column: "NormalizedUserName",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_PetAppointments_AppointmentId",
@@ -297,28 +378,28 @@ namespace PethouseAPI.Data.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "AspNetRoleClaims");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUserClaims");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUserLogins");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUserRoles");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUserTokens");
+
+            migrationBuilder.DropTable(
                 name: "PeakSeasons");
 
             migrationBuilder.DropTable(
                 name: "PetAppointments");
 
             migrationBuilder.DropTable(
-                name: "RoleClaims");
-
-            migrationBuilder.DropTable(
-                name: "Roles");
-
-            migrationBuilder.DropTable(
-                name: "UserClaims");
-
-            migrationBuilder.DropTable(
-                name: "UserLogins");
-
-            migrationBuilder.DropTable(
-                name: "UserRoles");
-
-            migrationBuilder.DropTable(
-                name: "UserTokens");
+                name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "Appointments");
@@ -327,10 +408,10 @@ namespace PethouseAPI.Data.Migrations
                 name: "Pets");
 
             migrationBuilder.DropTable(
-                name: "BreedSizes");
+                name: "AspNetUsers");
 
             migrationBuilder.DropTable(
-                name: "Owner");
+                name: "BreedSizes");
         }
     }
 }

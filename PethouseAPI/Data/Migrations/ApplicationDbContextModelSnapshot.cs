@@ -28,17 +28,32 @@ namespace PethouseAPI.Data.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
                         .HasColumnType("text");
 
                     b.Property<string>("Name")
-                        .HasColumnType("text");
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)");
 
                     b.Property<string>("NormalizedName")
-                        .HasColumnType("text");
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Roles");
+                    b.HasIndex("NormalizedName")
+                        .IsUnique()
+                        .HasDatabaseName("RoleNameIndex");
+
+                    b.ToTable("AspNetRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "23fa8dce-e71a-4b38-b87b-6d3a563117f9",
+                            Name = "Admin",
+                            NormalizedName = "ADMIN"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -56,11 +71,14 @@ namespace PethouseAPI.Data.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("RoleId")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");
 
-                    b.ToTable("RoleClaims");
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("AspNetRoleClaims", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
@@ -78,60 +96,70 @@ namespace PethouseAPI.Data.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("UserId")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");
 
-                    b.ToTable("UserClaims");
+                    b.HasIndex("UserId");
+
+                    b.ToTable("AspNetUserClaims", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
                     b.Property<string>("LoginProvider")
-                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("ProviderKey")
                         .HasColumnType("text");
 
                     b.Property<string>("ProviderDisplayName")
                         .HasColumnType("text");
 
-                    b.Property<string>("ProviderKey")
+                    b.Property<string>("UserId")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("UserId")
-                        .HasColumnType("text");
+                    b.HasKey("LoginProvider", "ProviderKey");
 
-                    b.ToTable("UserLogins");
+                    b.HasIndex("UserId");
+
+                    b.ToTable("AspNetUserLogins", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
                 {
-                    b.Property<string>("RoleId")
-                        .HasColumnType("text");
-
                     b.Property<string>("UserId")
                         .HasColumnType("text");
 
-                    b.ToTable("UserRoles");
+                    b.Property<string>("RoleId")
+                        .HasColumnType("text");
+
+                    b.HasKey("UserId", "RoleId");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("AspNetUserRoles", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
+                    b.Property<string>("UserId")
+                        .HasColumnType("text");
+
                     b.Property<string>("LoginProvider")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("UserId")
                         .HasColumnType("text");
 
                     b.Property<string>("Value")
                         .HasColumnType("text");
 
-                    b.ToTable("UserTokens");
+                    b.HasKey("UserId", "LoginProvider", "Name");
+
+                    b.ToTable("AspNetUserTokens", (string)null);
                 });
 
             modelBuilder.Entity("PethouseAPI.Data.Models.Appointment", b =>
@@ -251,10 +279,12 @@ namespace PethouseAPI.Data.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
                         .HasColumnType("text");
 
                     b.Property<string>("Email")
-                        .HasColumnType("text");
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)");
 
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("boolean");
@@ -278,10 +308,12 @@ namespace PethouseAPI.Data.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("NormalizedEmail")
-                        .HasColumnType("text");
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)");
 
                     b.Property<string>("NormalizedUserName")
-                        .HasColumnType("text");
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)");
 
                     b.Property<string>("PasswordHash")
                         .HasColumnType("text");
@@ -299,48 +331,64 @@ namespace PethouseAPI.Data.Migrations
                         .HasColumnType("boolean");
 
                     b.Property<string>("UserName")
-                        .HasColumnType("text");
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Owner");
+                    b.HasIndex("NormalizedEmail")
+                        .HasDatabaseName("EmailIndex");
+
+                    b.HasIndex("NormalizedUserName")
+                        .IsUnique()
+                        .HasDatabaseName("UserNameIndex");
+
+                    b.ToTable("AspNetUsers", (string)null);
 
                     b.HasData(
                         new
                         {
-                            Id = "1",
+                            Id = "82d6dd18-6ef9-44a1-9d42-8062050c8acd",
                             AccessFailedCount = 0,
                             Address = "calle falsa 123",
-                            ConcurrencyStamp = "47426f50-6b9a-47bc-a63c-a9718273b854",
+                            ConcurrencyStamp = "14b79b06-0bec-4129-99bb-5d126ebf48e8",
                             Email = "coco@gmail.com",
-                            EmailConfirmed = false,
+                            EmailConfirmed = true,
                             EmergencyContactName = "Dai",
                             EmergencyContactPhone = "9992923923",
                             EmergencyContactRelationship = "Sister",
                             LockoutEnabled = false,
                             Name = "Juan Brito",
+                            NormalizedEmail = "ADMIN@EXAMPLE.COM",
+                            NormalizedUserName = "ADMIN",
+                            PasswordHash = "AQAAAAIAAYagAAAAEPaVTBk9lpYQqLrFL+03K2dW9iYLOyTWqUz05g3/nsv+mers/cQ28tSdIt94ifosOA==",
                             PhoneNumber = "9992923563",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "b7ea1b98-7b4a-4135-9d08-2216bddaf63d",
-                            TwoFactorEnabled = false
+                            SecurityStamp = "22f8c254-7918-4706-810d-2ed8209d32fa",
+                            TwoFactorEnabled = false,
+                            UserName = "admin"
                         },
                         new
                         {
-                            Id = "2",
+                            Id = "0bee3397-ce64-4984-b580-10e879543d53",
                             AccessFailedCount = 0,
                             Address = "calle falsa 123",
-                            ConcurrencyStamp = "15a65ac4-0818-4348-8d29-fe0eb73a0477",
+                            ConcurrencyStamp = "5a7a81b1-6663-42f4-9f71-fdd5a265f037",
                             Email = "dai@gmail.com",
-                            EmailConfirmed = false,
+                            EmailConfirmed = true,
                             EmergencyContactName = "coco",
                             EmergencyContactPhone = "111111111",
                             EmergencyContactRelationship = "brother",
                             LockoutEnabled = false,
                             Name = "Dai",
+                            NormalizedEmail = "DAI@EXAMPLE.COM",
+                            NormalizedUserName = "DAI",
+                            PasswordHash = "AQAAAAIAAYagAAAAEPaVTBk9lpYQqLrFL+03K2dW9iYLOyTWqUz05g3/nsv+mers/cQ28tSdIt94ifosOA==",
                             PhoneNumber = "99999999",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "a3947257-03fa-483d-9bc9-8aa8da5c5a0c",
-                            TwoFactorEnabled = false
+                            SecurityStamp = "599644fa-d678-4e4c-bc47-3f19e25067db",
+                            TwoFactorEnabled = false,
+                            UserName = "DAI"
                         });
                 });
 
@@ -416,7 +464,7 @@ namespace PethouseAPI.Data.Migrations
                             IsMedicated = false,
                             Name = "Pocha",
                             Notes = "None",
-                            OwnerId = "1"
+                            OwnerId = "82d6dd18-6ef9-44a1-9d42-8062050c8acd"
                         },
                         new
                         {
@@ -427,7 +475,7 @@ namespace PethouseAPI.Data.Migrations
                             IsMedicated = false,
                             Name = "Luna",
                             Notes = "None",
-                            OwnerId = "1"
+                            OwnerId = "82d6dd18-6ef9-44a1-9d42-8062050c8acd"
                         },
                         new
                         {
@@ -438,7 +486,7 @@ namespace PethouseAPI.Data.Migrations
                             IsMedicated = false,
                             Name = "Coco",
                             Notes = "None",
-                            OwnerId = "2"
+                            OwnerId = "0bee3397-ce64-4984-b580-10e879543d53"
                         });
                 });
 
@@ -481,6 +529,57 @@ namespace PethouseAPI.Data.Migrations
                     b.HasIndex("PetId");
 
                     b.ToTable("PetAppointments");
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
+                {
+                    b.HasOne("PethouseAPI.Data.Models.Owner", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
+                {
+                    b.HasOne("PethouseAPI.Data.Models.Owner", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("PethouseAPI.Data.Models.Owner", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
+                {
+                    b.HasOne("PethouseAPI.Data.Models.Owner", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("PethouseAPI.Data.Models.Pet", b =>
