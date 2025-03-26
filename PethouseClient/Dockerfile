@@ -1,18 +1,25 @@
-# Use Node.js as the base image
-FROM node:current-alpine
+# Use Node.js base image
+FROM node:latest AS build
 
-# Set the working directory
+# Set working directory
 WORKDIR /app
 
 # Copy package files and install dependencies
 COPY package*.json ./
 RUN npm install
 
-# Copy the rest of the application
+# Copy the rest of the application files
 COPY . .
 
-# Expose the port the app runs on
-EXPOSE 5173
+# Build the application
+RUN npm run build:ssr
 
-# Command to start the app
-CMD ["npm", "run", "dev"]
+# Use Nginx as the server
+FROM nginx:alpine
+COPY --from=build app/dist/pethouse-client /usr/share/nginx/html
+
+# Expose port 80
+EXPOSE 80
+
+# Start the server
+CMD ["nginx", "-g", "daemon off;"]
