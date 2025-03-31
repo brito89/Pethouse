@@ -1,0 +1,15 @@
+<h1>Admin Dashboard</h1>
+<p>Manage application settings and data here.</p>
+<ul>
+    @for (pet of petItems(); track pet.name;)    {
+
+        <li>Nombre: {{ pet.name}}</li>
+        <li>DOB: {{ pet.dateOfBirth }}</li>
+        <li>Medicado: {{ pet.isMedicated ?  "Si" : "No" }}</li>
+        <li>Notas: {{ pet.notes }}</li>
+        <li style="margin-left: 10px;">Raza: {{ pet.breedSize.name }}</li>
+        <li style="margin-left: 10px;">Label: {{ pet.breedSize.label }}</li>
+        <li style="margin-left: 10px;">Precio Abajo: {{ pet.breedSize.priceLowSeason }}</li>
+        <li style="margin-left: 10px;">Precio Arriba: {{ pet.breedSize.pricePeakSeason }}</li>
+    }
+</ul>

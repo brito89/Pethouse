@@ -1,25 +1,22 @@
-# Use Node.js base image
-FROM node:lts AS build
+# Use Node.js base image for development
+FROM node:lts AS dev
 
 # Set working directory
 WORKDIR /app
 
 # Copy package files and install dependencies
-COPY package*.json ./
+COPY package*.json ./ 
 RUN npm install
 
-# Copy the rest of the application files
+# Copy application files
 COPY . .
 
-# Build the application
-RUN npm run build
+# Install Angular CLI globally for live development
+RUN npm install -g @angular/cli
 
-# Use Nginx as the server
-FROM nginx:stable
-COPY --from=build /app/dist/pethouse-client/browser /usr/share/nginx/html
+# Expose the default Angular development port
+EXPOSE 4200
 
-# # Expose port 80
-EXPOSE 80
+# Start the Angular development server
+CMD ["ng serve", "--host", "0.0.0.0"]
 
-# # Start the server
-CMD ["nginx", "-g", "daemon off;"]

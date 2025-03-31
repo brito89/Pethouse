@@ -36,7 +36,11 @@
       context: ./PethouseClient
       dockerfile: Dockerfile
     ports:
-      - "5173:80"
+      - "4200:4200"
+    volumes:
+    - ./PethouseClient/src:/app/src
+    - /app/node_modules
+    command: ["ng", "serve", "--host", "0.0.0.0", "--poll=2000"]
     depends_on:
       - api
 
