@@ -1,24 +1,37 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { Pet } from '../../model/pet.type';
 import { ApiService } from '../../services/api.service';
+import { Owner } from '../../model/owner.type';
+import { PetsComponent } from '../modal/pets/pets.component';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [],
+  imports: [PetsComponent, CommonModule],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css',
-  providers: []
+  providers: [],
 })
 export class DashboardComponent implements OnInit {
-  
-  constructor(private service: ApiService) { }
+  constructor(private service: ApiService) {}
 
-  petItems = signal<Array<Pet>>([]);
+  owners = signal<Array<Owner>>([]);
+  selectedPets: Array<Pet> = [];
 
-  ngOnInit(): void {
-    this.service.getPets().subscribe((pet) => {
-      this.petItems.set(pet);
-    });
+  isModalVisible = false;
+
+  openModal(owner: Owner) {
+    this.selectedPets = owner.pets;
+    this.isModalVisible = true;
   }
 
+  closeModal() {
+    this.isModalVisible = false;
+  }
+
+  ngOnInit(): void {
+    this.service.getOwners().subscribe((o) => {
+      this.owners.set(o);
+    });
+  }
 }

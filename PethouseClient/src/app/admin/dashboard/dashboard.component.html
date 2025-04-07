@@ -1,16 +1,68 @@
-<h1>Admin Dashboard</h1>
-<p>Manage application settings and data here.</p>
-<ul>
-    @for (pet of petItems(); track pet.id;)    {
+<div class="min-h-screen bg-gray-100 flex flex-col">
+  <!-- Navbar -->
+  <nav class="bg-gray-800 text-white p-4 flex justify-between items-center">
+    <h1 class="text-xl font-bold">Admin Panel</h1>
+    <ul class="flex space-x-4">
+      <li class="hover:text-gray-300 cursor-pointer">Dashboard</li>
+      <li class="hover:text-gray-300 cursor-pointer">Settings</li>
+      <li class="hover:text-gray-300 cursor-pointer">Logout</li>
+    </ul>
+  </nav>
 
-        <li>id: {{ pet.id}}</li>
-        <li>Nombre: {{ pet.name}}</li>
-        <li>DOB: {{ pet.dateOfBirth }}</li>
-        <li>Medicado: {{ pet.isMedicated ?  "Si" : "No" }}</li>
-        <li>Notas: {{ pet.notes }}</li>
-        <li style="margin-left: 10px;">Raza: {{ pet.breedSize.name }}</li>
-        <li style="margin-left: 10px;">Label: {{ pet.breedSize.label }}</li>
-        <li style="margin-left: 10px;">Precio Abajo: {{ pet.breedSize.priceLowSeason }}</li>
-        <li style="margin-left: 10px;">Precio Arriba: {{ pet.breedSize.pricePeakSeason }}</li>
-    }
-</ul>
+  <!-- Dashboard -->
+  <div class="p-8">
+    <h2 class="text-2xl font-bold text-gray-800 mb-6">Admin Dashboard</h2>
+
+    <!-- Table Section -->
+    <div class="bg-white p-6 rounded-lg shadow">
+      <h3 class="text-lg font-bold mb-4">Dueños</h3>
+      <table class="w-full border-collapse border border-gray-200">
+        <thead>
+          <tr class="bg-gray-800 text-white">
+            <th class="p-3 border border-gray-300">ID</th>
+            <th class="p-3 border border-gray-300">Nombre</th>
+            <th class="p-3 border border-gray-300">Email</th>
+            <th class="p-3 border border-gray-300">Telefono</th>
+            <th class="p-3 border border-gray-300">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (owner of owners(); track owner.id;) {
+          <tr class="hover:bg-gray-100">
+            <td class="p-3 border border-gray-300 text-center">
+              {{ owner.id }}
+            </td>
+            <td class="p-3 border border-gray-300 text-center">
+              {{ owner.name }}
+            </td>
+            <td class="p-3 border border-gray-300 text-center">
+              {{ owner.email }}
+            </td>
+            <td class="p-3 border border-gray-300 text-center">
+              {{ owner.phoneNumber }}
+            </td>
+            <td class="p-3 border border-gray-300 text-center">
+              <button
+                class="px-2 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 mx-1"
+                (click)="openModal(owner)"
+              >
+                Mascotas
+              </button>
+              <button
+                class="px-2 py-1 bg-red-500 text-white rounded hover:bg-red-600 mx-1"
+              >
+                Borrar
+              </button>
+            </td>
+          </tr>
+          }
+        </tbody>
+      </table>
+      <app-pets
+        [isVisible]="isModalVisible"
+        [pets]="selectedPets"
+        (close)="closeModal()"
+      ></app-pets>
+    </div>
+  </div>
+</div>
