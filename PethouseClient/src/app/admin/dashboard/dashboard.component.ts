@@ -1,6 +1,6 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { Pet } from '../../model/pet.type';
-import { DashboardService } from '../../services/dashboard.service';
+import { ApiService } from '../../services/api.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -11,11 +11,12 @@ import { DashboardService } from '../../services/dashboard.service';
 })
 export class DashboardComponent implements OnInit {
   
-  service = inject(DashboardService);
+  constructor(private service: ApiService) { }
+
   petItems = signal<Array<Pet>>([]);
 
   ngOnInit(): void {
-    this.service.getPetsFromAPI().subscribe((pet) => {
+    this.service.getPets().subscribe((pet) => {
       this.petItems.set(pet);
     });
   }

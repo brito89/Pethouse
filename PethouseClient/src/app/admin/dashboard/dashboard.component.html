@@ -1,8 +1,9 @@
 <h1>Admin Dashboard</h1>
 <p>Manage application settings and data here.</p>
 <ul>
-    @for (pet of petItems(); track pet.name;)    {
+    @for (pet of petItems(); track pet.id;)    {
 
+        <li>id: {{ pet.id}}</li>
         <li>Nombre: {{ pet.name}}</li>
         <li>DOB: {{ pet.dateOfBirth }}</li>
         <li>Medicado: {{ pet.isMedicated ?  "Si" : "No" }}</li>

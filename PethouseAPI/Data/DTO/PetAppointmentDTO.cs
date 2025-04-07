@@ -2,6 +2,7 @@
 
 public class PetAppointmentDTO
 {
+    public int Id { get; set; }
     public PetDTO? Pet { get; set; }
     public AppointmentDTO? Appointment { get; set; }
     public bool Monday { get; set; } = false;

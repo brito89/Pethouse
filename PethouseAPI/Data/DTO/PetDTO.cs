@@ -2,6 +2,7 @@
 
 public class PetDTO
 {
+    public int Id { get; set; }
     public required string Name { get; set; }
     public DateOnly DateOfBirth { get; set; }
     public string? BreedName { get; set; }
