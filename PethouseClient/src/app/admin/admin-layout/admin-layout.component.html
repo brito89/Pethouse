@@ -1,0 +1,29 @@
+<header class="bg-blue-800 text-white p-4 flex justify-between items-center">
+  <h1 class="text-xl">Admin Dashboard</h1>
+</header>
+<div class="flex">
+  <!-- Sidebar -->
+  <aside class="bg-gray-100 w-60 h-screen p-4">
+    <nav class="space-y-2">
+      <a href="#" class="block text-gray-700 hover:bg-gray-300 p-2 rounded"
+        >Dashboard Home</a
+      >
+      <a href="#" class="block text-gray-700 hover:bg-gray-300 p-2 rounded"
+        >Manage Products</a
+      >
+      <a href="#" class="block text-gray-700 hover:bg-gray-300 p-2 rounded"
+        >Orders</a
+      >
+      <a href="#" class="block text-gray-700 hover:bg-gray-300 p-2 rounded"
+        >Settings</a
+      >
+    </nav>
+  </aside>
+  <!-- Main content -->
+  <main class="flex-1 p-8">
+    <router-outlet></router-outlet>
+  </main>
+</div>
+<footer class="bg-gray-800 text-white text-center p-4">
+  <p>&copy; 2025 Admin Panel</p>
+</footer>
